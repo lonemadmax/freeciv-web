@@ -27,35 +27,21 @@
 					<li role="separator" class="divider"></li>
 					<li><a href="/game/list?v=multiplayer">Multiplayer</a></li>
 					<li role="separator" class="divider"></li>
-					<li><a href="/game/list?v=multiplayer">One Turn per Day</a></li>
-					<li role="separator" class="divider"></li>
 					<li><a href="/game/list?v=play-by-email">Play by Email</a></li>
 				</ul>
 			</li>
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-					<span onclick="window.location='http://forum.freegamedev.net/viewforum.php?f=97'">Forums</span> <span class="caret"></span>
+					<span onclick="window.location='http://forum.freeciv.org/f/viewforum.php?f=24'">Forums</span> <span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href="http://forum.freegamedev.net/viewforum.php?f=97">Freeciv-web <fmt:message key="nav-forum"/></a></li>
+					<li><a href="http://forum.freeciv.org/f/viewforum.php?f=24">Freeciv-web <fmt:message key="nav-forum"/></a></li>
 					<li role="separator" class="divider"></li>
 					<li><a href="https://www.reddit.com/r/freeciv">reddit.com/freeciv</a></li>
 				</ul>
 			</li>
 			<li><a href="http://www.freeciv.org/donate.html"><fmt:message key="nav-donate"/></a></li>
 			<li><a href="https://github.com/freeciv/freeciv-web">Contribute</a></li>
-			<%--<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="${pageContext.request.locale.language} ${pageContext.request.locale.country}">
-					Language <span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu">
-					<li><a href="/?locale=en_US">English</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="/?locale=zh_CN">Simplified Chinese</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="/?locale=zh_TW">Traditional Chinese</a></li>
-				</ul>
-			</li>--%>
 		</ul>
 		<form class="navbar-form navbar-right hidden-sm hidden-md" action="https://duckduckgo.com/" style="width: 220px;">
 			<input type="hidden" name="sites" value="www.freeciv.org,forum.freeciv.org,freeciv.wikia.com">
