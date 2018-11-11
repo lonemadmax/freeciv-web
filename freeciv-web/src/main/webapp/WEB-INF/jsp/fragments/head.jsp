@@ -19,7 +19,7 @@
 <meta name="author" content="The Freeciv project">
 <meta name="description" content="Play Freeciv online with 2d HTML5 or 3D WebGL in the browser. Freeciv is a Free and Open Source empire-building strategy game made with 2D HTML5 or 3D WebGL mode, which you can play in your browser, tablet or mobile device!">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="og:image" content="/static/images/frontpage-jumbotron-alt.png" />
+<meta property="og:image" content="/static/images/frontpage-jumbotron.png" />
 
 <script type="text/javascript" src="/javascript/libs/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
