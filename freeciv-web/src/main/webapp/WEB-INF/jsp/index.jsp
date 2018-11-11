@@ -114,6 +114,19 @@
 	<div class="container">
 		<%@include file="/WEB-INF/jsp/fragments/header.jsp"%>
 
+		<div>
+			<h3>Please note:</h3>
+			<p>If you are looking for the community server, jump to <a href="https://www.freecivweb.org/">freecivweb.org</a>. If you are not, maybe you should at least keep an eye on it.</p>
+			<p>This is just a throwaway server to play non-longturn games until the community server includes them.</p>
+			<p>Some warnings:</p>
+			<ul>
+				<li>It shouldn't last more than a year. In fact, I hope it lives much less than that. If there's interest, it might be possible to move savegames to the community server or somehow make them available to players when it is closed.</li>
+				<li>It may disappear any time.</li>
+				<li>There's no provision for security, anticheating, antibullying or any community management. Just please, please, please be nice.</li>
+				<li>The admin isn't skillful and doesn't have a lot of free time, so if something happens, the server may be offline for a few days.</li>
+				<li>This is not the cheapest server you can find, but it's far from being high-end. I hope it can handle some 20 games at the same time, but I really have no idea. I also don't know how many people may want to use it, so we'll see how it goes. It may be easy to get a DOS without even trying, or it may be too big and a waste of resources.</li>
+			</ul>
+		</div>
 		<div class="jumbotron">
 			<div class="row">
 
