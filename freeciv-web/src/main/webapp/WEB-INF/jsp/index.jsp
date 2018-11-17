@@ -334,27 +334,6 @@
 		</div> <!-- end multiplayer/best play by email -->
 
 
-                <div class="row">
-                        <div class="col-md-12">
-                                <h2><fmt:message key="index-youtube"/></h2>
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col-md-6">
-                                <div class="videoWrapper">
-                                        <iframe class="embed-responsive-item" width="542" height="343" src="https://www.youtube.com/embed/eNuercg7Jko" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                        </div>
-                       <div class="col-md-6">
-                                <div class="videoWrapper">
-                                        <iframe class="embed-responsive-item" width="542" height="343" src="https://www.youtube.com/embed/jZsq9SADdQk" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                        </div>
-
-
-</div> <!-- end youtube -->
-
-
 		<div class="row">
 			<div class="col-md-12">
 				<h2><fmt:message key="index-press"/></h2>
