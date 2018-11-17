@@ -40,8 +40,7 @@
 					<li><a href="https://www.reddit.com/r/freeciv">reddit.com/freeciv</a></li>
 				</ul>
 			</li>
-			<li><a href="http://www.freeciv.org/donate.html"><fmt:message key="nav-donate"/></a></li>
-			<li><a href="https://github.com/freeciv/freeciv-web">Contribute</a></li>
+			<li><a href="/contributing.jsp">Contribute</a></li>
 		</ul>
 		<form class="navbar-form navbar-right hidden-sm hidden-md" action="https://duckduckgo.com/" style="width: 220px;">
 			<input type="hidden" name="sites" value="www.freeciv.org,forum.freeciv.org,freeciv.wikia.com">
