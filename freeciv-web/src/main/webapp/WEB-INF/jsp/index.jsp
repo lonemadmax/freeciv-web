@@ -197,12 +197,6 @@
 						</c:if>
 						<a href="/webclient/?action=hotseat&type=singleplayer" class="btn"><i class="fa fa-user-plus"></i> <fmt:message key="index-game-launcher-hotseat" /></a>
 
-						<c:if test="${default_lang}">
-							<div class="features">
-								Play a <b>Freeciv-web One Turn per Day</b>, where up to 300 human <br>players play one turn every day:
-							</div>
-						</c:if>
-
 					</div>
 				</div>
 		</div> <!-- end game launcher -->
@@ -242,7 +236,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="panel-freeciv">
-					<h3>Multiplayer and One Turn per Day games:</h3>
+					<h3>Multiplayer games:</h3>
 					<c:if test="${not empty games and fn:length(games) > 0}">
 						<table class="table multiplayer-games">
 							<thead>
