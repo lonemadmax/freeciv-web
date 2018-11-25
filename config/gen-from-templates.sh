@@ -18,7 +18,7 @@
 # Substitutes variables from the configuration file in the templates.
 # gen-from-templates [configfile [source_dir]]
 # When source_dir is not given, configfile's parent is used.
-# When configfile is not given, script_src_dir/../configuration.sh is used.
+# When configfile is not given, script_src_dir/config is used.
 
 set -e
 unset CDPATH
@@ -32,7 +32,7 @@ if [ -z "${CONFIG}" ]; then
     echo >&2 "Configuration file not found."
     exit 2
   fi
-  CONFIG="${CONFIG}"/../configuration.sh
+  CONFIG="${CONFIG}"/config
 fi
 
 if [ "${CONFIG:0:1}" = - ]; then
@@ -62,8 +62,24 @@ while IFS= read -r line; do
   fi
 done < "${CONFIG}" > "${TMPFILE}"
 
-for f in "${SRCDIR}"/{freeciv-proxy,pbem}/settings.ini "${SRCDIR}"/freeciv-web/flyway.properties "${SRCDIR}"/freeciv-web/src/main/webapp/META-INF/context.xml "${SRCDIR}"/freeciv-web/src/main/webapp/WEB-INF/config.properties; do
-  sed -f "${TMPFILE}" < "$f".dist > "$f"
+for f in "${SRCDIR}"/config/*.tmpl; do
+  DEST="${SRCDIR}"/$(sed -n 's/.* LOCATION:\(.*\)/\1/p' < "$f" | head -n 1)
+  sed -f "${TMPFILE}" < "$f" > "$f".new
+  if [ -f "${DEST}" ]; then
+    cp "${DEST}" "$f".bck
+    if [ -f "$f".gen ]; then
+      if ! diff -u "$f".{gen,new} | patch --posix -s --merge -o - "$f".bck > "${DEST}"; then
+        cp "$f".new "${DEST}"
+        echo >&2 "Couldn't merge user changes for ${DEST}, the newly generated file will be used. There's a backup of the previous file in $f.bck"
+      fi
+    else
+      echo "${DEST} overwriten, a backup with user changes can be found in $f.bck"
+      cp "$f".new "${DEST}"
+    fi
+  else
+    cp "$f".new "${DEST}"
+  fi
+  mv "$f".{new,gen}
 done
 rm "${TMPFILE}"
 

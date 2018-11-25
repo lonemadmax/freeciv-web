@@ -1,4 +1,4 @@
-# Configuration used by the scripts and substituted in templates
+# Configuration substituted in templates
 #
 # Keep in mind there's no escaping yet, so some characters like \ or "
 # may be problematic in some variables.
@@ -22,11 +22,12 @@ DB_ROOT_PASSWORD=${RANDOM}${RANDOM}${RANDOM}
 
 # If you are sharing tomcat with other apps, you may want the stop scripts
 # to only stop freeciv-web and not the whole tomcat instance. Setup
-# tomcat-manager and uncomment the next lines adding proper user and password
+# tomcat-manager and change TOMCATMANAGER to Y, adding proper user and password
 # info. If the password is empty, it will be asked every time a start or stop
 # script is run.
-# TOMCATMANAGER_USER=tomcat-user
-# TOMCATMANAGER_PASSWORD=
+TOMCATMANAGER=N
+TOMCATMANAGER_USER=tomcat-user
+TOMCATMANAGER_PASSWORD=
 
 # Mail server
 # Login and password are used for authentication to the SMTP server, the default
