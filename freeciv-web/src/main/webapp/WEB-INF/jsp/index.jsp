@@ -124,7 +124,6 @@
 				<li>It may disappear any time.</li>
 				<li>There's no provision for security, anticheating, antibullying or any community management. Just please, please, please be nice.</li>
 				<li>The admin isn't skillful and doesn't have a lot of free time, so if something happens, the server may be offline for a few days.</li>
-				<li>This is not the cheapest server you can find, but it's far from being high-end. I hope it can handle some 20 games at the same time, but I really have no idea. I also don't know how many people may want to use it, so we'll see how it goes. It may be easy to get a DOS without even trying, or it may be too big and a waste of resources.</li>
 			</ul>
 		</div>
 		<div class="jumbotron">
