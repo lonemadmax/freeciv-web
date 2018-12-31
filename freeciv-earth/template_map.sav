@@ -3,7 +3,7 @@
 game_version=2939900
 is_scenario=TRUE
 name=_("Freeciv-Earth")
-description=_("Freeciv-web map on real earth map.")
+description=_("Freeciv-web map from an user image.")
 authors=_("The Freeciv-web project")
 save_random=FALSE
 players=FALSE
@@ -102,7 +102,7 @@ set={"name","value","gamestart"
 "mapseed",0,0
 "mapsize","XYSIZE","XYSIZE"
 "maxplayers",32,32
-"metamessage","Scenario: Earth(Large)",""
+"metamessage","Scenario: User Image",""
 "naturalcitynames",FALSE,FALSE
 "revolentype","RANDOM","RANDOM"
 "separatepoles",TRUE,TRUE
