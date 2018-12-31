@@ -46,7 +46,7 @@ Freeciv-Web consists of these components:
 
 * [pbem](pbem) is play-by-email support. 
 
-* [freeciv-earth](freeciv-earth) is code to generate Freeciv savegames from a map captured from mapbox.
+* [freeciv-earth](freeciv-earth) is code to generate Freeciv savegames from map images.
 
 Freeciv WebGL
 -------------
