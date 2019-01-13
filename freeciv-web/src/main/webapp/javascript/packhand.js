@@ -311,11 +311,21 @@ function handle_web_city_info_addition(packet)
     console.log("packet_web_city_info_addition for unknown city "
                 + packet['id']);
     return;
-  } else {
-    /* Merge the information from web_city_info_addition into the recently
-     * received city_info. */
-    $.extend(cities[packet['id']], packet);
   }
+
+  /* A change in protocol will remove buy_gold_cost from this packet and
+   * add buy_cost in the general CITY_INFO packet. The client will use the
+   * new field, but we may not recompile the server for some time, so make
+   * the updated client work with both versions.
+   * TODO: remove when all the servers are updated.
+   */
+  if (packet.buy_gold_cost != null) {
+    packet.buy_cost = packet.buy_gold_cost;
+  }
+
+  /* Merge the information from web_city_info_addition into the recently
+   * received city_info. */
+  $.extend(cities[packet['id']], packet);
 
   /* Get the now merged city_info. */
   packet = cities[packet['id']];
