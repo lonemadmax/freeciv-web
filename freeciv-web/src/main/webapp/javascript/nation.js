@@ -56,7 +56,16 @@ function update_nation_screen()
            + "; margin: 5px; width: 25px; height: 25px;'>"
            + "</div></td>";
 
-    nation_list_html += "<td>" + pplayer['name'] + "</td><td title=\"" + nations[pplayer['nation']]['legend'] + "\">"
+    // Hack.
+    // Use simpleStorage.set('X-username-in-nations-tab', 'Y') to show the username in the nations tab
+    // Use simpleStorage.deleteKey('X-username-in-nations-tab') to go bakc to showing the leader name
+    var screenname;
+    if (simpleStorage.get('X-username-in-nations-tab') == null) {
+      screenname = pplayer['name'];
+    } else {
+      screenname = ((pplayer.username == 'Unassigned' || pplayer.name.toLowerCase() == pplayer.username.toLowerCase()) ? pplayer.name : pplayer.username);
+    }
+    nation_list_html += "<td>" + screenname + "</td><td title=\"" + nations[pplayer['nation']]['legend'] + "\">"
            + nations[pplayer['nation']]['adjective']  + "</td>"
        + "<td class='nation_attitude'>" + col_love(pplayer) + "</td>"
        + "<td>" + get_score_text(pplayer) + "</td>"
