@@ -188,8 +188,15 @@ function clear_chatbox()
 function update_chatbox(messages)
 {
   var scrollDiv = get_chatbox_msg_list();
+  var toBottom = false;
 
   if (scrollDiv != null) {
+    if (civclient_state <= C_S_PREPARING) {
+      // 20 being something more than 0 (to avoid problems in some browsers)
+      // and a bit less than a line, so than it scrolls when you are in the
+      // bottom or nearly so.
+      toBottom = (scrollDiv.scrollHeight - scrollDiv.clientHeight - scrollDiv.scrollTop < 20);
+    }
     for (var i = 0; i < messages.length; i++) {
         var item = document.createElement('li');
         item.className = fc_e_events[messages[i].event][E_I_NAME];
@@ -204,6 +211,9 @@ function update_chatbox(messages)
       for (var i = 0; i < messages.length; i++) {
         message_log.update(messages[i]);
       }
+  }
+  if (toBottom) {
+    scrollDiv.scrollTop = scrollDiv.scrollHeight - scrollDiv.clientHeight;
   }
   setTimeout(() => $('#freeciv_custom_scrollbar_div').mCustomScrollbar('scrollTo', 'bottom'), 100);
 }
