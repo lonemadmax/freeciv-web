@@ -71,6 +71,60 @@ function init_chatbox()
 
 }
 
+function parse_message(packet)
+{
+  var match;
+  var msg = packet.message;
+
+  // Messages from the event cache start with "(T123 - 23:45:00) ", where
+  // the numbers are turn, hour, minute and second (in server local time)
+  // of the event.
+  const re_ts = /^\(T(\d*) - (\d\d):(\d\d):(\d\d)\) /;
+  match = re_ts.exec(msg);
+  if (match == null) {
+    packet.old = false;
+    packet.ts = new Date();
+  } else {
+    packet.old = true;
+    // We don't have the date or even a tz (yet)
+    packet.ts = new Date(0, 0, 0, match[2], match[3], match[4]);
+    msg = msg.substring(match[0].length);
+  }
+
+  const connection = connections[packet.conn_id];
+  if (connection != null) {
+    //packet.username = connection.username;
+    const player = connection.playing;
+    if (player == null) {
+      packet.name = "(" + connection.username + ")";
+    } else if (connection.observer) {
+      packet.name = connection.username + "(" + player.name + ")";
+    } else {
+      packet.name = player.name;
+    }
+  } else if (packet.event === E_CHAT_MSG) {
+    // User messages (and many other) will have a color tag here
+    const re_color = /^<font color="[^"]*">/;
+    match = re_color.exec(msg);
+    if (match != null) {
+      const tag = match[0];
+      msg = msg.substring(tag.length);
+      if (msg.substring(0,8) != "<a href=" && msg.substring(0,3) != "<l ") {
+        if (msg.charAt(0) == '<') {
+          const i = msg.indexOf('>');
+          if (i > 0) {
+            packet.name = msg.substring(1,i);
+            msg = msg.substring(i+2);
+          }
+        }
+      }
+      msg = tag + msg;
+    }
+  }
+
+  packet.message = msg;
+}
+
 /**************************************************************************
  Returns the kind of message (normal, private, ally).
  If an observer sends a private message, it will be treated as private.

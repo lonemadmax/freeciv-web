@@ -211,24 +211,32 @@ function handle_chat_msg(packet)
     packet['event'] = E_UNDEFINED;
   }
 
-  if (connections[conn_id] != null) {
-    if (!is_longturn()) {
-      message = "<b>" + connections[conn_id]['username'] + ":</b>" + message;
-    }
-  } else if (packet['event'] == E_SCRIPT) {
+  if (packet['event'] == E_SCRIPT) {
     var regxp = /\n/gi;
     message = message.replace(regxp, "<br>\n");
     show_dialog_message("Message for you:", message);
     return;
+  }
+
+  if (packet.event == E_CONNECTION && packet.message.substring(0,2) == "(T" && simpleStorage.get('X-show-old-connection-events') == null) return;
+
+  parse_message(packet);
+  message = packet.message;
+  if (packet.name != null) {
+    message = "<b>" + packet.name + ":</b> " + message;
   } else {
-    if (message.indexOf("/metamessage") != -1) return;  //don't spam message dialog on game start.
-    if (message.indexOf("Metaserver message string") != -1) return;  //don't spam message dialog on game start.
+    // Don't spam the message dialog on game start.
+    if (message.indexOf("/metamessage") != -1) return;
+    if (message.indexOf("Metaserver message string") != -1) return;
 
     if (ptile != null && ptile > 0) {
        message = "<span class='chatbox_text_tileinfo' "
            + "onclick='center_tile_id(" + ptile + ");'>" + message + "</span>";
     }
     if (is_speech_supported()) speak(message);
+  }
+  if (packet.old) {
+    message = "(T" + packet.turn + " - " + packet.ts.toTimeString().substring(0,8) + ") " + message;
   }
 
   packet['message'] = message;
