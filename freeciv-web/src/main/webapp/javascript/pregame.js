@@ -40,6 +40,9 @@ function pregame_start_game()
   if (is_pbem() || is_hotseat()) {
     set_alternate_turns();
   }
+  if (is_hotseat()) {
+    send_message("/set autotoggle disabled");
+  }
 
   var test_packet = {"pid" : packet_player_ready, "is_ready" : true,
                      "player_no": client.conn['player_num']};
