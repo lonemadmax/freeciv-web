@@ -94,6 +94,10 @@
   <b>Game title:</b> <input type='text' name='metamessage_setting' id='metamessage_setting' size='28' maxlength='42'>
 </div>
 
+<div class="main_menu_buttons">
+  <h3>Experimental</h3>
+  <input type='checkbox' name='username_in_nations_tab_setting' id='username_in_nations_tab_setting'>Show user instead of leader in Nations tab.<br>
+</div>
 
 </center>
 </div>

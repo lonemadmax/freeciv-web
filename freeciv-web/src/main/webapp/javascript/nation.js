@@ -56,11 +56,9 @@ function update_nation_screen()
            + "; margin: 5px; width: 25px; height: 25px;'>"
            + "</div></td>";
 
-    // Hack.
-    // Use simpleStorage.set('X-username-in-nations-tab', 'Y') to show the username in the nations tab
-    // Use simpleStorage.deleteKey('X-username-in-nations-tab') to go bakc to showing the leader name
+    // Hack until the tables are updated to user column selection
     var screenname;
-    if (simpleStorage.get('X-username-in-nations-tab') == null) {
+    if (!show_username_in_nations_tab) {
       screenname = pplayer['name'];
     } else {
       screenname = ((pplayer.username == 'Unassigned' || pplayer.name.toLowerCase() == pplayer.username.toLowerCase()) ? pplayer.name : pplayer.username);

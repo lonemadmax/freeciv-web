@@ -114,6 +114,8 @@ var gui_gtk2_metaserver_tab_first = FALSE;
 var gui_gtk2_allied_chat_only = FALSE;
 var gui_gtk2_small_display_layout = FALSE;
 
+var show_username_in_nations_tab = false;
+
 function init_options_dialog()
 {
   $("#save_button").button("option", "label", "Save Game (Ctrl+S)");
@@ -193,4 +195,14 @@ function init_options_dialog()
     $("#surrender_button").hide();
   }
 
+  show_username_in_nations_tab = simpleStorage.get('X-username-in-nations-tab') != null;
+  $('#username_in_nations_tab_setting').prop('checked', show_username_in_nations_tab);
+  $('#username_in_nations_tab_setting').change(function() {
+    show_username_in_nations_tab = this.checked;
+    if (show_username_in_nations_tab) {
+      simpleStorage.set('X-username-in-nations-tab', 'Y');
+    } else {
+      simpleStorage.deleteKey('X-username-in-nations-tab');
+    }
+  });
 }
