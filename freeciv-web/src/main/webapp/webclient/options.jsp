@@ -44,12 +44,12 @@
 <tr>
 <td>
   <div class="main_menu_buttons">
-    <b>Play sounds:</b> <input type='checkbox' name='play_sounds_setting' id='play_sounds_setting' checked>
+    <input type='checkbox' name='play_sounds_setting' id='play_sounds_setting' checked><b>Play sounds</b>
   </div>
 </td>
 <td>
   <div class="main_menu_buttons">
-    <b>Speech messages:</b> <input type='checkbox' name='speech_enabled_setting' id='speech_enabled_setting'>
+    <input type='checkbox' name='speech_enabled_setting' id='speech_enabled_setting'><b>Speech messages</b>
   </div>
 </td>
 </tr>
