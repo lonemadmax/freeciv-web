@@ -97,6 +97,18 @@
 <div class="main_menu_buttons">
   <h3>Experimental</h3>
   <input type='checkbox' name='username_in_nations_tab_setting' id='username_in_nations_tab_setting'>Show user instead of leader in Nations tab.<br>
+  Show timestamps for <select name='msg_ts_setting' id='msg_ts_setting'>
+    <option value='old'>only old messages</option>
+    <option value='all'>all messages</option>
+    <option value='no'>no messages</option>
+  </select><br>
+  Show timestamps in <select name='msg_ts_tz_setting' id='msg_ts_tz_setting'>
+    <option value='local'>local time</option>
+    <option value='server'>server time</option>
+    <option value='UTC'>UTC</option>
+  </select><br>
+  * The message settings only apply to new messages<br>
+  * Note that due to limitations in freeciv protocol, the times may be off near DST changes<br>
 </div>
 
 </center>

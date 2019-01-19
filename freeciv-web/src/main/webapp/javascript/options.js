@@ -116,6 +116,9 @@ var gui_gtk2_small_display_layout = FALSE;
 
 var show_username_in_nations_tab = false;
 
+var msg_opt_show_timestamp = 'old';
+var msg_opt_ts_offset = 'server';
+
 function init_options_dialog()
 {
   $("#save_button").button("option", "label", "Save Game (Ctrl+S)");
@@ -203,5 +206,17 @@ function init_options_dialog()
     } else {
       simpleStorage.deleteKey('X-username-in-nations-tab');
     }
+  });
+
+  $('#msg_ts_setting').val(msg_opt_show_timestamp)
+                      .change(function() {
+    msg_opt_show_timestamp = $(this).val();
+    simpleStorage.set('msg.ts', msg_opt_show_timestamp);
+  });
+
+  $('#msg_ts_tz_setting').val(msg_opt_ts_offset)
+                         .change(function() {
+    msg_opt_ts_offset = $(this).val();
+    simpleStorage.set('msg.tz', msg_opt_ts_offset);
   });
 }

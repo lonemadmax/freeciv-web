@@ -55,6 +55,8 @@ var RENDERER_2DCANVAS = 1;      // default HTML5 Canvas
 var RENDERER_WEBGL = 2;         // WebGL + Three.js
 var renderer = RENDERER_2DCANVAS;  // This variable specifies which map renderer to use, 2d Canvas or WebGL.
 
+// Connection date at 00:00:00 in server time, amenable to use in js Date
+var server_time_base;
 
 /**************************************************************************
  Main starting point for Freeciv-web
@@ -202,6 +204,23 @@ function civclient_init()
 
   show_username_in_nations_tab = simpleStorage.get('X-username-in-nations-tab') != null;
 
+  msg_opt_show_timestamp = simpleStorage.get('msg.ts');
+  if (msg_opt_show_timestamp == null
+      || (msg_opt_show_timestamp !== 'all' && msg_opt_show_timestamp !== 'no')) {
+    msg_opt_show_timestamp = 'old';
+  }
+
+  msg_opt_ts_offset = simpleStorage.get('msg.tz');
+  if (msg_opt_ts_offset == null
+      || (msg_opt_ts_offset !== 'local' && msg_opt_ts_offset !== 'UTC')) {
+    msg_opt_ts_offset = 'server';
+  }
+
+  const now = new Date();
+  server_time_base = Date.UTC(now.getUTCFullYear(),
+                              now.getUTCMonth(),
+                              now.getUTCDate())
+                   - fcwServerTZOffset;
 
 }
 

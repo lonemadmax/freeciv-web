@@ -1,4 +1,6 @@
+<%@ page import="java.util.Date" %>
 <%@ page import="java.util.Properties" %>
+<%@ page import="java.util.TimeZone" %>
 <%@ page import="java.io.IOException" %>
 <%@ page import="static org.apache.commons.lang3.StringUtils.stripToNull" %>
 <%@ page import="static org.apache.commons.lang3.StringUtils.stripToEmpty" %>
@@ -41,6 +43,7 @@ try {
 var ts="${initParam.buildTimeStamp}";
 var fcwDebug=<%= fcwDebug %>;
 var fcwMinified="<%= fcwMinified %>";
+var fcwServerTZOffset=<%= TimeZone.getDefault().getOffset(new Date().getTime()) %>;
 </script>
 <script type="text/javascript" src="/javascript/libs/jquery.min.js?ts=${initParam.buildTimeStamp}"></script>
 

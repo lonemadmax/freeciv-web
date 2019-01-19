@@ -86,8 +86,13 @@ function parse_message(packet)
     packet.ts = new Date();
   } else {
     packet.old = true;
-    // We don't have the date or even a tz (yet)
-    packet.ts = new Date(0, 0, 0, match[2], match[3], match[4]);
+    // We don't have the date.
+    // This will still give wrong times if the game and webapp servers run
+    // in different timezones.
+    packet.ts = new Date(server_time_base
+                         + ((parseInt(match[2], 10)  * 60
+                         +   parseInt(match[3], 10)) * 60
+                         +   parseInt(match[4], 10)) * 1000);
     msg = msg.substring(match[0].length);
   }
 
@@ -123,6 +128,22 @@ function parse_message(packet)
   }
 
   packet.message = msg;
+}
+
+/**************************************************************************
+ Returns the time string for a message.
+**************************************************************************/
+function get_message_ts_text(msg_ts)
+{
+  switch (msg_opt_ts_offset) {
+  case 'local':
+    return msg_ts.toTimeString().substring(0,8);
+  case 'UTC':
+    return msg_ts.toISOString().substring(11,19);
+  default:
+    const corrected_ts = new Date(msg_ts.getTime() + fcwServerTZOffset);
+    return corrected_ts.toISOString().substring(11,19);
+  }
 }
 
 /**************************************************************************

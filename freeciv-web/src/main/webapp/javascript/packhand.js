@@ -235,8 +235,10 @@ function handle_chat_msg(packet)
     }
     if (is_speech_supported()) speak(message);
   }
-  if (packet.old) {
-    message = "(T" + packet.turn + " - " + packet.ts.toTimeString().substring(0,8) + ") " + message;
+  if ((msg_opt_show_timestamp === 'all')
+      || (msg_opt_show_timestamp !== 'no' && packet.old)) {
+    message = "(T" + packet.turn + " - "
+            + get_message_ts_text(packet.ts) + ") " + message;
   }
 
   packet['message'] = message;
