@@ -195,7 +195,6 @@ function init_options_dialog()
     $("#surrender_button").hide();
   }
 
-  show_username_in_nations_tab = simpleStorage.get('X-username-in-nations-tab') != null;
   $('#username_in_nations_tab_setting').prop('checked', show_username_in_nations_tab);
   $('#username_in_nations_tab_setting').change(function() {
     show_username_in_nations_tab = this.checked;

@@ -200,6 +200,7 @@ function civclient_init()
  init_common_intro_dialog();
  setup_window_size();
 
+  show_username_in_nations_tab = simpleStorage.get('X-username-in-nations-tab') != null;
 
 
 }
