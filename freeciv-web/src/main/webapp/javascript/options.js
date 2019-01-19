@@ -115,6 +115,7 @@ var gui_gtk2_allied_chat_only = FALSE;
 var gui_gtk2_small_display_layout = FALSE;
 
 var show_username_in_nations_tab = false;
+var use_player_colors = false;
 
 var msg_opt_show_timestamp = 'old';
 var msg_opt_ts_offset = 'server';
@@ -206,6 +207,18 @@ function init_options_dialog()
     } else {
       simpleStorage.deleteKey('X-username-in-nations-tab');
     }
+  });
+
+  $('#player_colors_setting').prop('checked', use_player_colors);
+  $('#player_colors_setting').change(function() {
+    use_player_colors = this.checked;
+    if (use_player_colors) {
+      simpleStorage.set('X-player-colors', 'Y');
+    } else {
+      simpleStorage.deleteKey('X-player-colors');
+    }
+    palette = generate_palette();
+    overview_hash = -1;
   });
 
   $('#msg_ts_setting').val(msg_opt_show_timestamp)

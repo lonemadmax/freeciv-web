@@ -52,7 +52,12 @@ function update_nation_screen()
 
     nation_list_html += "<tr data-plrid='" + player_id + "' class='" + plr_class
 	   + "'><td>" + flag_html + "</td>";
-    nation_list_html += "<td><div style='background-color: " + nations[pplayer['nation']]['color']
+    nation_list_html += "<td><div style='background-color: "
+           + (use_player_colors ? ("rgb(" + pplayer['color_red']
+                                    + "," + pplayer['color_green']
+                                    + "," + pplayer['color_blue']
+                                    + ")")
+                                : nations[pplayer['nation']]['color'])
            + "; margin: 5px; width: 25px; height: 25px;'>"
            + "</div></td>";
 

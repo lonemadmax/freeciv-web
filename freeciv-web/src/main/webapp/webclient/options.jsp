@@ -99,6 +99,7 @@
   <table>
     <tr>
       <td><input type='checkbox' name='username_in_nations_tab_setting' id='username_in_nations_tab_setting'>Show user instead of leader in Nations tab.</td>
+      <td><input type='checkbox' name='player_colors_setting' id='player_colors_setting'>Use player colors instead of nation colors.</td>
     </tr><tr>
       <td>Show timestamps for <select name='msg_ts_setting' id='msg_ts_setting'>
           <option value='old'>only old messages</option>

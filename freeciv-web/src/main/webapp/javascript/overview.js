@@ -318,6 +318,12 @@ function generate_palette() {
   }
 
   palette_color_offset = palette.length;
+  if (use_player_colors) {
+    for (var player_id in players) {
+      var pplayer = players[player_id];
+      palette.push([pplayer['color_red'], pplayer['color_green'], pplayer['color_blue']]);
+    }
+  } else {
   var player_count = Object.keys(players).length;
 
   for (var player_id in players) {
@@ -332,6 +338,7 @@ function generate_palette() {
         palette[palette_color_offset+(player_id % player_count)] = [0,0,0];
       }
     }
+  }
   }
   return palette;
 }

@@ -203,6 +203,7 @@ function civclient_init()
  setup_window_size();
 
   show_username_in_nations_tab = simpleStorage.get('X-username-in-nations-tab') != null;
+  use_player_colors = simpleStorage.get('X-player-colors') != null;
 
   msg_opt_show_timestamp = simpleStorage.get('msg.ts');
   if (msg_opt_show_timestamp == null
