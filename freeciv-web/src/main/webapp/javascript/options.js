@@ -232,4 +232,14 @@ function init_options_dialog()
     msg_opt_ts_offset = $(this).val();
     simpleStorage.set('msg.tz', msg_opt_ts_offset);
   });
+
+  $('#chat_prefer_allies_setting').prop('checked',
+                             simpleStorage.get('X-chat-prefer-allies') != null);
+  $('#chat_prefer_allies_setting').change(function() {
+    if (simpleStorage.get('X-chat-prefer-allies') == null) {
+      simpleStorage.set('X-chat-prefer-allies', 'Y');
+    } else {
+      simpleStorage.deleteKey('X-chat-prefer-allies');
+    }
+  });
 }

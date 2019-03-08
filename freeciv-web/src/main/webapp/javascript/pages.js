@@ -72,7 +72,20 @@ function set_client_page(page)
     $("#game_page").show();
 
     if (renderer == RENDERER_WEBGL) webgl_start_renderer();
-    set_chat_direction(null);
+    var chat_dir = null;
+    if (simpleStorage.get('X-chat-prefer-allies') != null
+        && client.conn.playing != null) {
+      const self = client.conn.playing['playerno'];
+      for (var player_id in players) {
+        if (player_id != self
+            && players[player_id]['is_alive']
+            && diplstates[player_id] == DS_ALLIANCE) {
+          chat_dir = self;
+          break;
+        }
+      }
+    }
+    set_chat_direction(chat_dir);
 
     break;
   case PAGE_LOAD:
