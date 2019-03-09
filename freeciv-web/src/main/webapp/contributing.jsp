@@ -3,6 +3,131 @@
 <html lang="en">
 <head>
 	<%@include file="/WEB-INF/jsp/fragments/head.jsp"%>
+<script>
+$(document).ready(function () {
+  $.getJSON('/data/accounting.json', function(data) {
+    function newYear(year) {
+      return {
+          year: year
+        , futurePayments: 0
+        , pastPayments: 0
+        , donations: 0
+        , entries: []
+      };
+    }
+    var yearData = [];
+    var total = newYear(0);
+    var currentYear = newYear(data.accounting[0][0].substring(0, 4));
+    yearData.push(currentYear);
+
+    var dl = data.accounting.length;
+    for (var i = 0; i < dl; i++) {
+      var entry = data.accounting[i];
+      var year = entry[0].substring(0, 4);
+      if (year != currentYear.year) {
+        total.futurePayments += currentYear.futurePayments;
+        total.pastPayments += currentYear.pastPayments;
+        total.donations += currentYear.donations;
+        currentYear = newYear(year);
+        yearData.push(currentYear);
+      }
+      if (entry[3] == "-") {
+        if (entry[0] <= data.lastUpdate) {
+          currentYear.pastPayments += entry[2];
+        } else {
+          currentYear.futurePayments += entry[2];
+        }
+      } else {
+        currentYear.donations += entry[2];
+      }
+      currentYear.entries.push(entry);
+    }
+    total.futurePayments += currentYear.futurePayments;
+    total.pastPayments += currentYear.pastPayments;
+    total.donations += currentYear.donations;
+    yearData.push(currentYear);
+
+    var accEl = document.getElementById("accounting");
+
+    var el = document.createElement("p");
+    el.appendChild(document.createTextNode("Last updated: " + data.lastUpdate));
+    accEl.appendChild(el);
+
+    function addYearTitle(year) {
+      var el = document.createElement("h4");
+      el.appendChild(document.createTextNode(year));
+      accEl.appendChild(el);
+    }
+
+    function addAccountingTable(yearData) {
+      function formatMoney(value) {
+        var t;
+        var q = Math.abs(value);
+        if (q >= 100) {
+          t = "" + q;
+          var iDigits = t.length - 2;
+          t = t.substring(0, iDigits) + "," + t.substring(iDigits);
+        } else if (q >= 10) {
+          t = "0," + q;
+        } else {
+          t = "0,0" + q;
+        }
+        return (value >= 0 ? t : ("-" + t));
+      }
+
+      function summaryRow(title, value) {
+        var row = document.createElement("tr");
+        var cell = document.createElement("td");
+        row.appendChild(cell);
+        cell = document.createElement("th");
+        cell.setAttribute("scope", "row");
+        cell.appendChild(document.createTextNode(title));
+        row.appendChild(cell);
+        cell = document.createElement("td");
+        cell.appendChild(document.createTextNode(formatMoney(value)));
+        row.appendChild(cell);
+        return row;
+      }
+
+      var table = document.createElement("table");
+      table.setAttribute("class", "accounting");
+      var tbody = document.createElement("tbody");
+      tbody.appendChild(summaryRow("Future expected payments", yearData.futurePayments));
+      tbody.appendChild(summaryRow("Past real payments", yearData.pastPayments));
+      tbody.appendChild(summaryRow("Donations", yearData.donations));
+      table.appendChild(tbody);
+      var iEntry = yearData.entries.length;
+      if (iEntry > 0) {
+        tbody = document.createElement("tbody");
+        while (iEntry--) {
+          var entry = yearData.entries[iEntry];
+          var row = document.createElement("tr");
+          var cell = document.createElement("td");
+          cell.appendChild(document.createTextNode(entry[0]));
+          row.appendChild(cell);
+          cell = document.createElement("td");
+          cell.appendChild(document.createTextNode(entry[1]));
+          row.appendChild(cell);
+          cell = document.createElement("td");
+          cell.appendChild(document.createTextNode(formatMoney(entry[2])));
+          row.appendChild(cell);
+          tbody.appendChild(row);
+        }
+        table.appendChild(tbody);
+      }
+      accEl.appendChild(table);
+    }
+
+    addYearTitle("Lifetime total");
+    addAccountingTable(total);
+
+    for (var i = yearData.length - 1; i--; i >= 0) {
+      addYearTitle(yearData[i].year);
+      addAccountingTable(yearData[i]);
+    }
+  });
+});
+</script>
 <style>
 .accounting {
  margin-bottom:20px;
@@ -34,49 +159,7 @@
 		<p><a href="http://www.freeciv.org/donate.html">Freeciv</a> may also thank your appreciation</p>
 		<p>And if you are filthy rich, you may hire developers and artists to do what you can't.</p>
 		<h3>Income and expenses</h3>
-		<p>Last updated: 2018-12-16</p>
-		<h4>Lifetime total</h4>
-		<table class="accounting">
-			<tr><th scope="row">Future expected payments</th><td>-341,64</td></tr>
-			<tr><th scope="row">Past real payments</th><td>-65,23</td></tr>
-			<tr><th scope="row">Donations</th><td>0,00</td></tr>
-		</table>
-		<h4>2019</h4>
-		<table class="accounting">
-		<tbody>
-			<tr><td></td><th scope="row">Future expected payments</th><td>-341,64</td></tr>
-			<tr><td></td><th scope="row">Past real payments</th><td>0,00</td></tr>
-			<tr><td></td><th scope="row">Donations</th><td>0,00</td></tr>
-		</tbody>
-		<tbody>
-			<tr><td>2019-12-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-11-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-10-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-09-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-08-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-07-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-06-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-05-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-04-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-03-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-02-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2019-01-14</td><td>Server</td><td>-28,47</td></tr>
-		</tbody>
-		</table>
-		<h4>2018</h4>
-		<table class="accounting">
-		<tbody>
-			<tr><td></td><th scope="row">Future expected payments</th><td>0,00</td></tr>
-			<tr><td></td><th scope="row">Past real payments</th><td>-65,23</td></tr>
-			<tr><td></td><th scope="row">Donations</th><td>0,00</td></tr>
-		</tbody>
-		<tbody>
-			<tr><td>2018-12-14</td><td>PayPal rebate</td><td>5,00</td></tr>
-			<tr><td>2018-12-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2018-11-14</td><td>Server</td><td>-28,47</td></tr>
-			<tr><td>2018-11-14</td><td>Domain registry</td><td>-13,29</td></tr>
-		</tbody>
-		</table>
+		<div id="accounting"></div>
 		<%@include file="/WEB-INF/jsp/fragments/footer.jsp"%>
 	</div>
 </body>
