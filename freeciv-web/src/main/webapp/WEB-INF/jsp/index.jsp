@@ -115,13 +115,11 @@
 		<%@include file="/WEB-INF/jsp/fragments/header.jsp"%>
 
 		<div>
-			<h3>Please note:</h3>
-			<p>If you are looking for the community server, jump to <a href="https://www.freecivweb.org/">freecivweb.org</a>. If you are not, maybe you should at least keep an eye on it.</p>
-			<p>This is just a throwaway server to play non-longturn games until the community server includes them.</p>
+			<h3>The One True Community Site</h3>
+			<p>So it seems we finally have one server for everybody. Check out <a href="https://www.freecivweb.org/">freecivweb.org</a>. If you want to move your games there, <a href="mailto:antiswen@yahoo.es">send me a message</a> from you registered mail address detailing your username, whether you want to remove your account from here and, if you already have an account in the other server, what are the username and mail address there.</p>
+			<p>This was born as just a throwaway server to play non-longturn games until the community server included them. Now that it seems we have one, this server demise is near.</p>
 			<p>Some warnings:</p>
 			<ul>
-				<li>It shouldn't last more than a year. In fact, I hope it lives much less than that. If there's interest, it might be possible to move savegames to the community server or somehow make them available to players when it is closed.</li>
-				<li>It may disappear any time.</li>
 				<li>There's no provision for security, anticheating, antibullying or any community management. Just please, please, please be nice.</li>
 				<li>The admin isn't skillful and doesn't have a lot of free time, so if something happens, the server may be offline for a few days.</li>
 			</ul>
