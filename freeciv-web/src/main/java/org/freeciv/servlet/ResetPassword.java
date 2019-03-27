@@ -85,8 +85,7 @@ public class ResetPassword extends HttpServlet {
         String username = "";
 
         if (email_parameter == null || email_parameter.length() <= 4 || email_parameter.length() > 90) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Invalid e-mail address. Please try again with another email.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.ERRMSG_INVALIDMAIL_EXTENDED);
             return;
         }
 
@@ -105,7 +104,7 @@ public class ResetPassword extends HttpServlet {
             InputStream in = captchaResponse.getEntity().getContent();
             String body = IOUtils.toString(in, "UTF-8");
             if (!(body.contains("success") && body.contains("true"))) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Captcha failed!");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.ERRMSG_CAPTCHA);
                 return;
             }
         }
@@ -133,7 +132,7 @@ public class ResetPassword extends HttpServlet {
             preparedStatement.setString(2, email_parameter);
             int noUpdated = preparedStatement.executeUpdate();
             if (noUpdated != 1) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unable to reset password.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.ERRMSG_PASSWORD);
                 return;
             }
 
@@ -152,7 +151,7 @@ public class ResetPassword extends HttpServlet {
         } catch (Exception err) {
             response.setHeader("result", "error");
             err.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unable to reset password: " + err);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.ERRMSG_PASSWORD + err);
             return;
         } finally {
             if (conn != null)
@@ -186,7 +185,7 @@ public class ResetPassword extends HttpServlet {
             email.addTo(email_parameter);
             email.send();
         } catch (EmailException err) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unable to reset password.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.ERRMSG_PASSWORD);
         }
 
     }
@@ -195,7 +194,7 @@ public class ResetPassword extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "This endpoint only supports the POST method.");
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, Constants.ERRMSG_POST);
 
     }
 }
