@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 '''**********************************************************************
@@ -25,7 +25,6 @@ from os import chdir
 import re
 import sys
 from tornado import web, websocket, ioloop, httpserver
-from tornado.ioloop import IOLoop
 from debugging import *
 import logging
 from civcom import *
@@ -71,7 +70,7 @@ class StatusHandler(web.RequestHandler):
 
 class WSHandler(websocket.WebSocketHandler):
     logger = logging.getLogger("freeciv-proxy")
-    io_loop = IOLoop.instance()
+    io_loop = ioloop.IOLoop.current()
 
     def open(self):
         self.id = str(uuid.uuid4())
@@ -159,7 +158,7 @@ class WSHandler(websocket.WebSocketHandler):
             return "password"
 
     def check_user_password(self, cursor, username, password):
-        query = ("select secure_hashed_password, ENCRYPT(%(pwd)s, secure_hashed_password), activated from auth where lower(username)=lower(%(usr)s)")
+        query = ("select secure_hashed_password, CAST(ENCRYPT(%(pwd)s, secure_hashed_password) AS CHAR), activated from auth where lower(username)=lower(%(usr)s)")
         cursor.execute(query, {'usr': username, 'pwd': password})
         result = cursor.fetchall()
 
@@ -169,7 +168,7 @@ class WSHandler(websocket.WebSocketHandler):
 
         for db_pass, encrypted_pass, active in result:
             if (active == 0): return False
-            if db_pass == encrypted_pass.decode(): return True
+            if db_pass == encrypted_pass: return True
 
         return False
 
@@ -232,7 +231,7 @@ if __name__ == "__main__":
 
         http_server = httpserver.HTTPServer(application)
         http_server.listen(PROXY_PORT)
-        ioloop.IOLoop.instance().start()
+        ioloop.IOLoop.current().start()
 
     except KeyboardInterrupt:
         print('Exiting...')
