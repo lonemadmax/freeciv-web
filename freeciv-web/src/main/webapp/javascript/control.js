@@ -2731,7 +2731,7 @@ function request_unit_do_action(action_id, actor_id, target_id, sub_tgt_id,
     action_type: action_id,
     actor_id: actor_id,
     target_id: target_id,
-    sub_tgt_id: sub_tgt_id || 0,
+    sub_tgt_id: sub_tgt_id !== undefined ? sub_tgt_id : EXTRA_NONE,
     name: name || ""
   }));
 }
