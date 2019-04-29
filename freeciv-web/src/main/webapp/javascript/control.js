@@ -2701,11 +2701,11 @@ function request_unit_build_city()
         if (target_city == null) {
           packet = {"pid" : packet_city_name_suggestion_req,
             "unit_id"     : punit['id'] };
+          send_request(JSON.stringify(packet));
         } else {
           request_unit_do_action(ACTION_JOIN_CITY, punit.id, target_city.id);
         }
 
-        send_request(JSON.stringify(packet));
       }
     }
   }
