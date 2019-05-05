@@ -24,10 +24,10 @@
 				</a>
 				<ul class="dropdown-menu">
 					<li><a href="/game/list?v=singleplayer">Single-player</a></li>
-					<li role="separator" class="divider"></li>
 					<li><a href="/game/list?v=multiplayer">Multiplayer</a></li>
-					<li role="separator" class="divider"></li>
 					<li><a href="/game/list?v=play-by-email">Play by Email</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="/games/">History</a></li>
 				</ul>
 			</li>
 			<li class="dropdown">
@@ -36,7 +36,6 @@
 				</a>
 				<ul class="dropdown-menu">
 					<li><a href="http://forum.freeciv.org/f/viewforum.php?f=24">Freeciv-web <fmt:message key="nav-forum"/></a></li>
-					<li role="separator" class="divider"></li>
 					<li><a href="https://www.reddit.com/r/freeciv">reddit.com/freeciv</a></li>
 				</ul>
 			</li>
