@@ -36,7 +36,7 @@ fi
 savesdir=${1}
 if [ "${gametype}" = "longturn" ]; then
   if [ ${6::12} = "longturn_up_" ]; then
-    game_type=multiplayer
+    gametype=multiplayer
     upname=${6:12}
     tmpmark=${upname::8}
     upuser=${upname:9}
