@@ -41,9 +41,6 @@ ps aux | grep -ie freeciv-proxy | awk '{print $2}' | xargs kill -9
 #5.1 Freeciv-PBEM
 ps aux | grep -ie pbem | awk '{print $2}' | xargs kill -9 
 
-#5.2 meta-stats
-ps aux | grep -ie meta-stats | awk '{print $2}' | xargs kill -9 
-
 #5.3 Freeciv-Earth
 ps aux | grep -ie freeciv-earth | awk '{print $2}' | xargs kill -9 
 

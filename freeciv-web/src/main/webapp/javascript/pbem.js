@@ -531,7 +531,6 @@ function handle_pbem_load()
 function pbem_init_game()
 {
   set_human_pbem_players();
-  $.post("/freeciv_time_played_stats?type=pbem").fail(function() {});
 }
 
 

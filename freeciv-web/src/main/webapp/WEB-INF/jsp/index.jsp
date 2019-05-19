@@ -18,7 +18,6 @@
 		margin: auto;
 		width: 100%;
 	}
-	.statistics { text-align: center; }
 
 	/* Game launcher */          
 	#game-launcher {
@@ -203,19 +202,6 @@
 					</div>
 				</div>
 		</div> <!-- end game launcher -->
-
-
-		<c:if test="${default_lang}">
-			<div id="statistics" class="row">
-				<div class="col-md-12">
-					<div class="panel-freeciv statistics">
-						<h4><span id="statistics-singleplayer"><b>0</b></span> <fmt:message key="index-stats-singleplayer"/> <span id="statistics-multiplayer"><b>0</b></span> <fmt:message key="index-stats-multiplayer"/><br>
-						<fmt:message key="index-stats-since"/></h4>
-
-					</div>
-				</div>
-			</div> <!-- end statistics -->
-		</c:if>
 
 
 		<div id="chrome-web-store" style="display: none;" class="alert alert-warning top-buffer-3" role="alert">

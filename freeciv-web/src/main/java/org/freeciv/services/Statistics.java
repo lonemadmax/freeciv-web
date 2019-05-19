@@ -64,50 +64,6 @@ public class Statistics {
 		}
 	}
 
-	public List<Map<String, Object>> getPlayedGamesByType() {
-
-		Connection connection = null;
-		try {
-			Context env = (Context) (new InitialContext().lookup(Constants.JNDI_CONNECTION));
-			DataSource ds = (DataSource) env.lookup(Constants.JNDI_DDBBCON_MYSQL);
-			connection = ds.getConnection();
-			String query = "SELECT DISTINCT statsDate AS date, "
-					+ "(SELECT gameCount FROM games_played_stats WHERE statsDate = date AND gameType = '0') AS webSinglePlayer, "
-					+ "(SELECT gameCount FROM games_played_stats WHERE statsDate = date AND gameType = '1') AS webMultiPlayer, "
-					+ "(SELECT gameCount FROM games_played_stats WHERE statsDate = date AND gameType = '2') AS webPlayByEmail, "
-					+ "(SELECT gameCount FROM games_played_stats WHERE statsDate = date AND gameType = '4') AS webHotseat, "
-					+ "(SELECT gameCount FROM games_played_stats WHERE statsDate = date AND gameType = '3') AS desktopMultiplayer, "
-					+ "(SELECT gameCount FROM games_played_stats WHERE statsDate = date AND gameType = '5') AS webSinglePlayer3D "
-					+ "FROM games_played_stats";
-
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			ResultSet rs = preparedStatement.executeQuery();
-			List<Map<String, Object>> result = new ArrayList<>();
-			while (rs.next()) {
-				Map<String, Object> item = new HashMap<>();
-				item.put("date", rs.getDate("date"));
-				item.put("webSinglePlayer", rs.getInt("webSinglePlayer"));
-				item.put("webMultiPlayer", rs.getInt("webMultiPlayer"));
-				item.put("webPlayByEmail", rs.getInt("webPlayByEmail"));
-				item.put("webHotseat", rs.getInt("webHotseat"));
-				item.put("desktopMultiplayer", rs.getInt("desktopMultiplayer"));
-				item.put("webSinglePlayer3D", rs.getInt("webSinglePlayer3D"));
-				result.add(item);
-			}
-			return result;
-		} catch (Exception err) {
-			throw new RuntimeException(err);
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	public List<Map<String, Object>> getHallOfFameList() {
 
 		Connection connection = null;

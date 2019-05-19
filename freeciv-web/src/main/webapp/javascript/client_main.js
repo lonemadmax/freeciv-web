@@ -336,20 +336,7 @@ function update_metamessage_on_gamestart()
     setInterval(update_metamessage_game_running_status, 200000);
   }
 
-  if ($.getUrlVar('action') == "new" || $.getUrlVar('action') == "earthload" 
-      || $.getUrlVar('scenario') == "true") {
-    if (renderer == RENDERER_2DCANVAS) {
-      $.post("/freeciv_time_played_stats?type=single2d").fail(function() {});
-    } else {
-      $.post("/freeciv_time_played_stats?type=single3d").fail(function() {});
-    }
-  }
-  if ($.getUrlVar('action') == "multi" && client.conn.playing != null
-      && client.conn.playing['pid'] == players[0]['pid'] && !is_longturn()) {
-    $.post("/freeciv_time_played_stats?type=multi").fail(function() {});
-  }
   if ($.getUrlVar('action') == "hotseat") {
-    $.post("/freeciv_time_played_stats?type=hotseat").fail(function() {});
     send_message("/metamessage hotseat game" );
   }
 }

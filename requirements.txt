@@ -2,6 +2,5 @@
 -r freeciv-proxy/requirements.txt
 -r pbem/requirements.txt
 -r freeciv-earth/requirements.txt
--r scripts/meta-stats/requirements.txt
 -r scripts/freeciv-img-extract/requirements.txt
 -r scripts/requirements.txt

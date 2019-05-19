@@ -399,20 +399,6 @@ Rerun the sync-js-hand.js script.
 							</goals>
 						</execution>
 
-						<execution>
-							<id>header-minify</id>
-							<configuration>
-								<jsSourceDir>static/javascript</jsSourceDir>
-								<jsFinalFile>header.js</jsFinalFile>
-								<jsSourceIncludes>
-									<jsSourceInclude>header.js</jsSourceInclude>
-								</jsSourceIncludes>
-								<closureCreateSourceMap>false</closureCreateSourceMap>
-							</configuration>
-							<goals>
-								<goal>minify</goal>
-							</goals>
-						</execution>
 					</executions>
 				</plugin>
 

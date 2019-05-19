@@ -68,28 +68,6 @@
 		<url-pattern>/game/play-by-email/top</url-pattern>
 	</servlet-mapping>
 	
-	<!-- /game/statistics -->
-	<servlet>
-		<servlet-name>GameStatistics</servlet-name>
-		<servlet-class>org.freeciv.servlet.GameStatistics</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>GameStatistics</servlet-name>
-		<url-pattern>/game/statistics</url-pattern>
-	</servlet-mapping>
-	
-	<!-- /game/statistics/details -->
-	<servlet>
-		<servlet-name>GameStatisticsDetails</servlet-name>
-		<servlet-class>org.freeciv.servlet.GameStatisticsDetails</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>GameStatisticsDetails</servlet-name>
-		<url-pattern>/game/statistics/details</url-pattern>
-	</servlet-mapping>
-
 	<!-- /hall_of_fame -->
 	<servlet>
 		<servlet-name>HallOfFameList</servlet-name>
@@ -244,17 +222,6 @@
 	<servlet-mapping>
 		<servlet-name>DeleteSaveGame</servlet-name>
 		<url-pattern>/deletesavegame</url-pattern>
-	</servlet-mapping>
-
-	<!-- /freeciv_time_played_stats -->
-	<servlet>
-		<servlet-name>FreecivStatsServlet</servlet-name>
-		<servlet-class>org.freeciv.servlet.FreecivStatsServlet</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>FreecivStatsServlet</servlet-name>
-		<url-pattern>/freeciv_time_played_stats</url-pattern>
 	</servlet-mapping>
 
 	<!-- /meta/status -->

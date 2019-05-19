@@ -48,9 +48,6 @@ for port in $(seq ${FREECIVPROXY_BASEPORT} $((FREECIVPROXY_BASEPORT + FREECIVPRO
   nohup python3 "${FREECIV_WEB_DIR}/freeciv-proxy/freeciv-proxy.py" ${port} > "${FREECIV_WEB_DIR}/logs/freeciv-proxy-${port}.log" 2>&1 &
 done
 
-echo "starting meta-stats.py" && \
-(cd ${FREECIV_WEB_DIR}/scripts/meta-stats && nohup python3 -u meta-stats.py > ../../logs/meta-stats.log 2>&1) || echo "unable to start meta-stats" &
-
 echo "Starting Freeciv-Earth-mapgen." && \
 cd ${FREECIV_WEB_DIR}/freeciv-earth/ && nohup python3 -u freeciv-earth-mapgen.py > ../logs/freeciv-earth.log 2>&1 || echo "unable to start freeciv-earth-mapgen" &
 

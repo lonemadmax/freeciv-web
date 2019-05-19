@@ -119,10 +119,6 @@
 		font-size: 18px;
 		line-height: 20px;
 	}
-	.ongoing-games-number {
-		margin-left: 5px;
-		background:#BE602D;
-	}
 	.nav {
 		font-size: 16px;
 	}
