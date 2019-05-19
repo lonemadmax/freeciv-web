@@ -29,6 +29,10 @@ TOMCATMANAGER=N
 TOMCATMANAGER_USER=tomcat-user
 TOMCATMANAGER_PASSWORD=
 
+# Freeciv proxy
+FREECIVPROXY_BASEPORT=7000
+FREECIVPROXY_INSTANCES=3
+
 # Mail server
 # Login and password are used for authentication to the SMTP server, the default
 # is no auth.

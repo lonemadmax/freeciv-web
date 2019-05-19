@@ -23,8 +23,7 @@ class Civlauncher(Thread):
     def run(self):
         while 1:
             try:
-                print("Start freeciv-web on port " + str(self.new_port) + 
-                      " and freeciv-proxy on port " + str(1000 + self.new_port) + ".");
+                print("Start freeciv-web on port " + str(self.new_port))
                 retcode = call(["../publite2/init-freeciv-web.sh"
                                , self.savesdir
                                , str(self.new_port)

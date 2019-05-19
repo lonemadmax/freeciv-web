@@ -11,6 +11,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+cd ${SCRIPT_DIR}
+. ./configuration.sh
+
 # Some versions of Curl will by default change the formatting of headers
 # when printing them to the terminal. A bug will then cause Curl to not turn
 # of the custom formatting after the headers are printed. This causes all
@@ -116,11 +120,11 @@ checkWebURL "Tomcat DB connection" "http://localhost/game/list" --head
 checkWebURL "Pubstatus" "http://localhost:4002/pubstatus"
 checkWebURL "Mailstatus" "http://localhost:4003/mailstatus"
 
-checkWebURL "freeciv-proxy directly" "http://localhost:7001/status"
-checkWebURL "freeciv-proxy through nginx" "http://localhost/civsocket/7001/status"
+checkWebURL "freeciv-proxy directly" "http://localhost:${FREECIVPROXY_BASEPORT}/status"
+checkWebURL "freeciv-proxy through nginx" "http://localhost/civsocket/${FREECIVPROXY_BASEPORT}/status"
 
-checkWebSocket "WebSocket directly (freeciv-proxy)" "http://localhost:7002/civsocket/7002"
-checkWebSocket "WebSocket through nginx" "http://localhost/civsocket/7002"
+checkWebSocket "WebSocket directly (freeciv-proxy)" "http://localhost:${FREECIVPROXY_BASEPORT}/"
+checkWebSocket "WebSocket through nginx" "http://localhost/civsocket"
 
 checkPID "freeciv-web (spawned by publite2)" "freeciv-web"
 

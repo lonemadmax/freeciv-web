@@ -1,5 +1,5 @@
 #! /bin/bash
-# starts freeciv-proxy and freeciv-web.
+# Starts freeciv-web.
 # This script is started by civlauncher.py in publite2.
 
 if [ "$#" -ne 6 ]; then
@@ -64,9 +64,6 @@ addArgs --type "${gametype}"
 export FREECIV_SAVE_PATH=${savesdir};
 rm -f "/var/lib/tomcat8/webapps/data/scorelogs/score-${2}.log"
 
-python3 ../freeciv-proxy/freeciv-proxy.py "${3}" > "../logs/freeciv-proxy-${3}.log" 2>&1 &
-proxy_pid=$! && 
 ${HOME}/freeciv/bin/freeciv-web "${args[@]}" > /dev/null 2> "../logs/freeciv-web-stderr-${2}.log"
 rc=$?
-kill -9 ${proxy_pid}
 exit ${rc}

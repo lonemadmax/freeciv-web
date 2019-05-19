@@ -94,10 +94,9 @@ function network_init()
 function websocket_init()
 {
   $.blockUI({ message: "<h2>Please wait while connecting to the server.</h2>" });
-  var proxyport = 1000 + parseFloat(civserverport);
   var ws_protocol = ('https:' == window.location.protocol) ? "wss://" : "ws://";
   var port = window.location.port ? (':' + window.location.port) : '';
-  ws = new WebSocket(ws_protocol + window.location.hostname + port + "/civsocket/" + proxyport);
+  ws = new WebSocket(ws_protocol + window.location.hostname + port + "/civsocket");
 
   ws.onopen = check_websocket_ready;
 

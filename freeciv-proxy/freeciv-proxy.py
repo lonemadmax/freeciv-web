@@ -40,14 +40,6 @@ CONNECTION_LIMIT = 1000
 civcoms = {}
 
 
-class IndexHandler(web.RequestHandler):
-
-    """Serves the Freeciv-proxy index page """
-
-    def get(self):
-        self.write("Freeciv-web websocket proxy, port: " + str(PROXY_PORT))
-
-
 class StatusHandler(web.RequestHandler):
 
     """Serves the Freeciv-proxy status page, on the url:  /status """
@@ -169,8 +161,7 @@ if __name__ == "__main__":
         logger = logging.getLogger("freeciv-proxy")
 
         application = web.Application([
-            (r'/civsocket/' + str(PROXY_PORT), WSHandler),
-            (r"/", IndexHandler),
+            (r"/", WSHandler),
             (r"(.*)status", StatusHandler),
         ])
 

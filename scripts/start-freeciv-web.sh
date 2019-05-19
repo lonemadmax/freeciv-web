@@ -42,6 +42,12 @@ echo "Publite2 started" && \
 echo "Starting Freeciv-PBEM" && \
 (cd ${FREECIV_WEB_DIR}/pbem/ && nohup python3 -u pbem.py > ../logs/pbem.log 2>&1) || echo "unable to start pbem" &
 
+# Proxy
+for port in $(seq ${FREECIVPROXY_BASEPORT} $((FREECIVPROXY_BASEPORT + FREECIVPROXY_INSTANCES - 1)) ); do
+  echo "Starting freeciv-proxy ${port}" && \
+  nohup python3 "${FREECIV_WEB_DIR}/freeciv-proxy/freeciv-proxy.py" ${port} > "${FREECIV_WEB_DIR}/logs/freeciv-proxy-${port}.log" 2>&1 &
+done
+
 echo "starting meta-stats.py" && \
 (cd ${FREECIV_WEB_DIR}/scripts/meta-stats && nohup python3 -u meta-stats.py > ../../logs/meta-stats.log 2>&1) || echo "unable to start meta-stats" &
 

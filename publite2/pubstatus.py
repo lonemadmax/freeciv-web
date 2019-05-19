@@ -58,8 +58,7 @@ class StatusHandler(web.RequestHandler):
     self.write("<h3>Running Freeciv-web servers:</h3>");
     self.write("<table><tr><td>Server Port</td><td>Type</td><td>Started time</td><td>Restarts</td><td>Errors</td></tr>");
     for server in self.metachecker.server_list:
-      self.write("<tr><td><a href='/civsocket/" + str(server.new_port + 1000) 
-                 + "/status'>" + str(server.new_port) + "</a></td>" + "<td>" + str(server.gametype) 
+      self.write("<tr><td>" + str(server.new_port) + "</td><td>" + str(server.gametype)
                  +  "</td><td>" + str(server.started_time) + "</td><td>" + str(server.num_start) + "</td><td>" + str(server.num_error) +  "</td></tr>");
     self.write("</table></div>");
     self.write("</body></html>");
