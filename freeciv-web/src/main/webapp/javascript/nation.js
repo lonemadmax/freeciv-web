@@ -37,6 +37,14 @@ function update_nation_screen()
 	  + "<th>Nation:</th><th class='nation_attitude'>Attitude</th><th>Score</th><th>AI/Human</th><th>Alive?</th>"
 	  + "<th>Diplomatic state</th><th>Embassy</th><th>Shared vision</th><th class='nation_team'>Team</th><th>State</th></tr></thead><tbody class='nation_table_body'>";
 
+  const connected = [];
+  for (var ci in connections) {
+    const connection = connections[ci];
+    if (connection.playing != null && connection.playing.playerno != null) {
+      connected[connection.playing.playerno] = true;
+    }
+  }
+
   for (var player_id in players) {
     var pplayer = players[player_id];
     if (pplayer['nation'] == -1) continue;
@@ -104,12 +112,15 @@ function update_nation_screen()
       pstate = "Done";
     } else if (!pplayer['flags'].isSet(PLRF_AI)
                && pplayer['nturns_idle'] > 1) {
-      pstate += "Idle for " + pplayer['nturns_idle'] + " turns";
+      pstate = "Idle for " + pplayer['nturns_idle'] + " turns";
     } else if (!pplayer['phase_done']
                && !pplayer['flags'].isSet(PLRF_AI)) {
       pstate = "Moving";
     }
-    nation_list_html += "<td id='player_state_" + player_id + "'>" + pstate + "</td>";
+    if (connected[pplayer.playerno]) {
+      pstate += " <span style='color: #00EE00;'><b>Online</b></span>";
+    }
+    nation_list_html += "<td>" + pstate + "</td>";
     nation_list_html += "</tr>";
 
     if (!pplayer['flags'].isSet(PLRF_AI) && pplayer['is_alive'] && pplayer['nturns_idle'] <= 4) no_humans++;
@@ -159,32 +170,6 @@ function update_nation_screen()
     $("#nations").height( mapview['height'] - 150);
     $("#nations").width( mapview['width']);
   }
-
-  /* Fetch online (connected) players on this game from Freeciv-proxy. */
-  $.ajax({
-    url: "/civsocket/" + (parseInt(civserverport) + 1000) + "/status",
-    dataType: "html",
-    cache: false,
-    async: true
-  }).done(function( data ) {
-    var online_players = {};
-    var players_re = /username: <b>([^<]*)</g;
-    var found;
-
-    while ((found = players_re.exec(data)) != null) {
-      if (found[1].length > 0) {
-        online_players[found[1].toLowerCase()] = true;
-      }
-    }
-
-    for (var player_id in players) {
-      var pplayer = players[player_id];
-      if (online_players[pplayer['username'].toLowerCase()]) {
-        $("#player_state_" + player_id).html("<span style='color: #00EE00;'><b>Online</b></span>");
-      }
-    }
-    $("#nation_table").trigger('update');
-  });
 
   if (is_longturn()) $(".nation_attitude").hide();
   if (is_longturn()) $(".nation_team").hide();
