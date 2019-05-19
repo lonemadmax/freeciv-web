@@ -31,8 +31,6 @@ from civcom import *
 import json
 import uuid
 import gc
-import mysql.connector
-import configparser
 import urllib.request
 import urllib.parse
 
@@ -40,16 +38,6 @@ PROXY_PORT = 8002
 CONNECTION_LIMIT = 1000
 
 civcoms = {}
-
-chdir(sys.path[0])
-settings = configparser.ConfigParser()
-settings.read("settings.ini")
-
-mysql_user = settings.get("Config", "mysql_user")
-mysql_database = settings.get("Config", "mysql_database")
-mysql_password = settings.get("Config", "mysql_password")
-
-google_signin = settings.get("Config", "google_signin")
 
 
 class IndexHandler(web.RequestHandler):
@@ -124,58 +112,13 @@ class WSHandler(websocket.WebSocketHandler):
 
     # Check user authentication
     def check_user(self, username, token):
-      cursor = None
-      cnx = None
-      try:
-        cnx = mysql.connector.connect(user=mysql_user, database=mysql_database, password=mysql_password)
-        cursor = cnx.cursor()
-
-        auth_method = self.get_game_auth_method(cursor)
-        if auth_method == "password":
-          return self.check_user_password(cursor, username, token)
-        elif auth_method == "google":
-          return self.check_user_google(username, token)
-        else:
-          return False
-
-      finally:
-        cursor.close()
-        cnx.close()
-      return False
-
-    # Returns the auth method for this game
-    # Right now this is:
-    # - Google account for otpd if a client key is defined
-    # - password for any other case
-    def get_game_auth_method(self, cursor):
-        if google_signin is None or len(google_signin.strip()) == 0:
-            return "password"
-        query = ("select count(*) from servers where port=%(port)s and type='longturn'")
-        cursor.execute(query, {'port': self.civserverport})
-        if cursor.fetchall()[0][0] > 0:
-            return "google"
-        else:
-            return "password"
-
-    def check_user_password(self, cursor, username, password):
-        query = ("select secure_hashed_password, CAST(ENCRYPT(%(pwd)s, secure_hashed_password) AS CHAR), activated from auth where lower(username)=lower(%(usr)s)")
-        cursor.execute(query, {'usr': username, 'pwd': password})
-        result = cursor.fetchall()
-
-        if len(result) == 0:
-            # Unreserved user, no password needed
-            return True
-
-        for db_pass, encrypted_pass, active in result:
-            if (active == 0): return False
-            if db_pass == encrypted_pass: return True
-
-        return False
-
-    def check_user_google(self, username, token):
-        # Check login with Google Account
         try:
-            request = urllib.request.Request('http://localhost:8080/freeciv-web/token_signin', data=urllib.parse.urlencode({'idtoken': token, 'username': username}).encode('ascii'), headers={'X-Real-IP': 'proxy'})
+            request = urllib.request.Request('http://localhost:8080/freeciv-web/game_login',
+                            data=urllib.parse.urlencode({'port': self.civserverport,
+                                                         'idtoken': token,
+                                                         'username': username}
+                                                       ).encode('ascii'),
+                            headers={'X-Real-IP': 'proxy'})
             return urllib.request.urlopen(request).read().decode('ascii') == 'OK'
         except Exception as e:
             logger.warn(e)
@@ -218,6 +161,8 @@ if __name__ == "__main__":
         if len(sys.argv) == 2:
             PROXY_PORT = int(sys.argv[1])
         print(('port: ' + str(PROXY_PORT)))
+
+        chdir(sys.path[0])
 
         LOG_FILENAME = '../logs/freeciv-proxy-logging-' + str(PROXY_PORT) + '.log'
         logging.basicConfig(filename=LOG_FILENAME,level=logging.INFO)

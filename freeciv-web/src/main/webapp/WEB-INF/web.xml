@@ -167,6 +167,17 @@
 		<url-pattern>/validate_user</url-pattern>
 	</servlet-mapping>
 
+	<!-- /game_login -->
+	<servlet>
+		<servlet-name>GameLogin</servlet-name>
+		<servlet-class>org.freeciv.servlet.GameLogin</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GameLogin</servlet-name>
+		<url-pattern>/game_login</url-pattern>
+	</servlet-mapping>
+
 	<!-- /random_user -->
 	<servlet>
 		<servlet-name>RandomUser</servlet-name>
