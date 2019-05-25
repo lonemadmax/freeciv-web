@@ -21,46 +21,6 @@
 var map = {};
 var tiles = {};
 
-var DIR8_NORTHWEST = 0;
-var DIR8_NORTH = 1;
-var DIR8_NORTHEAST = 2;
-var DIR8_WEST = 3;
-var DIR8_EAST = 4;
-var DIR8_SOUTHWEST = 5;
-var DIR8_SOUTH = 6;
-var DIR8_SOUTHEAST = 7;
-var DIR8_LAST = 8;
-var DIR8_COUNT = DIR8_LAST;
-
-var TF_WRAPX = 1;
-var TF_WRAPY = 2;
-var TF_ISO = 4;
-var TF_HEX = 8;
-
-var T_NONE = 0; /* A special flag meaning no terrain type. */
-var T_UNKNOWN = 0; /* An unknown terrain. */
-
-/* The first terrain value. */
-var T_FIRST = 0;
-
-/* used to compute neighboring tiles.
- *
- * using
- *   x1 = x + DIR_DX[dir];
- *   y1 = y + DIR_DY[dir];
- * will give you the tile as shown below.
- *   -------
- *   |0|1|2|
- *   |-+-+-|
- *   |3| |4|
- *   |-+-+-|
- *   |5|6|7|
- *   -------
- * Note that you must normalize x1 and y1 yourself.
- */
-var DIR_DX = [ -1, 0, 1, -1, 1, -1, 0, 1 ];
-var DIR_DY = [ -1, -1, -1, 0, 0, 1, 1, 1 ];
-
 
 /****************************************************************************
   ...
