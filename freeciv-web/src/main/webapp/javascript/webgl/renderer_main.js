@@ -48,23 +48,6 @@ function init_webgl_renderer()
     dataType: "script"
   });
 
-  /* Loads the two tileset definition files */
-  $.ajax({
-    url: "/javascript/2dcanvas/tileset_config_amplio2.js",
-    dataType: "script",
-    async: false
-  }).fail(function() {
-    console.error("Unable to load tileset config.");
-  });
-
-  $.ajax({
-    url: "/javascript/2dcanvas/tileset_spec_amplio2.js",
-    dataType: "script",
-    async: false
-  }).fail(function() {
-    console.error("Unable to load tileset spec. Run Freeciv-img-extract.");
-  });
-
   if (is_touch_device()) {
     $.ajax({
       url: "/javascript/libs/hammer.min.js",

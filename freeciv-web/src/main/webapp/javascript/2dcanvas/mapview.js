@@ -47,23 +47,6 @@ function init_mapview()
 
   $("#canvas_div").append($('<canvas/>', { id: 'canvas'}));
 
-  /* Loads the two tileset definition files */
-  $.ajax({
-    url: "/javascript/2dcanvas/tileset_config_amplio2.js",
-    dataType: "script",
-    async: false
-  }).fail(function() {
-    console.error("Unable to load tileset config.");
-  });
-
-  $.ajax({
-    url: "/javascript/2dcanvas/tileset_spec_amplio2.js",
-    dataType: "script",
-    async: false
-  }).fail(function() {
-    console.error("Unable to load tileset spec. Run Freeciv-img-extract.");
-  });
-
   mapview_canvas = document.getElementById('canvas');
   mapview_canvas_ctx = mapview_canvas.getContext("2d");
   buffer_canvas = document.createElement('canvas');
