@@ -78,17 +78,10 @@ function civclient_init()
   game_type = $.getUrlVar('type');
   if (game_type == null) {
     if (action == null || action == 'multi') {
-      swal({
-             title: "Unknown game type",
-             text: "For some reason the client can't determine what kind of game this is. Please <a href='https://github.com/freeciv/freeciv-web/issues'>open an issue</a> detailing how you got here",
-             html: true,
-             type: "error"
-           },
-           // Requires a parameter to also be called on cancel
-           function (unused) {
-             window.location.href ='/';
-           }
-      );
+      unrecoverable_error("Unknown game type"
+                         , "For some reason the client can't determine what kind of game this is. Please <a href='https://github.com/lonemadmax/freeciv-web/issues'>open an issue</a> detailing how you got here"
+                         , true
+                         );
       return;
     } else if (action == 'pbem') {
       game_type = 'pbem';
@@ -110,17 +103,19 @@ function civclient_init()
   fc_seedrandom = new Math.seedrandom('freeciv-web');
 
   if (window.requestAnimationFrame == null) {
-    swal("Please upgrade your browser.");
+    unrecoverable_error("Please upgrade your browser."
+                        , "Your browser doesn't support requestAnimationFrame, a function we use to update the map");
     return;
   }
 
   if (is_longturn() && observing) {
-    swal("LongTurn games can't be observed.");
+    unrecoverable_error("LongTurn games can't be observed.");
     return;
   }
 
   if (typeof client_handle_packet === 'undefined') {
-    swal("Bad runtime!", "Freeciv-web has not been compiled correctly, try again later or contact the admin about client_handle_packet.", "error");
+    unrecoverable_error("Bad runtime!"
+                        , "Freeciv-web has not been compiled correctly, try again later or contact the admin about client_handle_packet.");
     console.error("client_handle_packet not found, freeciv-web not compiled "
           + "correctly. Please run sync.sh.");
     return;
@@ -372,6 +367,23 @@ function show_dialog_message(title, message) {
 
   $('#generic_dialog').css("max-height", "450px");
 
+}
+
+/**************************************************************************
+ Shows an error dialog which gets out of the game on close.
+**************************************************************************/
+function unrecoverable_error(title, text, html) {
+    text = text || title;
+    swal({title: title
+        , text: text || title
+        , html: html
+        , type: "error"
+        },
+        // Requires a parameter to also be called on cancel
+        function (unused) {
+            window.location.href ='/';
+        }
+    );
 }
 
 

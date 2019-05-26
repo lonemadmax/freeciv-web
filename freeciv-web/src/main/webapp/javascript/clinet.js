@@ -105,11 +105,8 @@ function websocket_init()
   };
 
   ws.onclose = function (event) {
-   swal("Network Error", "Connection to server is closed. Please reload the page to restart. Sorry!", "error");
-   message_log.update({
-     event: E_LOG_ERROR,
-     message: "Error: connection to server is closed. Please reload the page to restart. Sorry!"
-   });
+   unrecoverable_error("Network Error"
+            , "Connection to server is closed. Please reload the page to restart. Sorry!");
    console.info("WebSocket connection closed, code+reason: " + event.code + ", " + event.reason);
    $("#turn_done_button").button( "option", "disabled", true);
    $("#save_button").button( "option", "disabled", true);
@@ -123,8 +120,10 @@ function websocket_init()
   };
 
   ws.onerror = function (evt) {
-   show_dialog_message("Network error", "A problem occured with the "
-                       + document.location.protocol + " WebSocket connection to the server: " + ws.url);
+   unrecoverable_error("Network error"
+                      , "A problem occured with the "
+                        + document.location.protocol
+                        + " WebSocket connection to the server: " + ws.url);
    console.error("WebSocket error: Unable to communicate with server using "
                  + document.location.protocol + " WebSockets. Error: " + evt);
   };
@@ -146,7 +145,7 @@ function check_websocket_ready()
     }
 
     if (is_longturn() && google_user_token == null) {
-      swal("Login failed.");
+      unrecoverable_error("Login failed.", "This game requires a Google login");
       return;
     }
 

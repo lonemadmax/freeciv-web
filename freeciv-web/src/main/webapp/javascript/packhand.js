@@ -115,7 +115,8 @@ function handle_server_join_reply(packet)
 
   } else {
 
-    swal("You were rejected from the game.", (packet['message'] || ""), "error");
+    unrecoverable_error("You were rejected from the game."
+                        , (packet['message'] || ""));
     client.conn.id = -1;/* not in range of conn_info id */
     set_client_page(PAGE_MAIN);
 
