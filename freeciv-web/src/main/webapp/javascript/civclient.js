@@ -119,6 +119,13 @@ function civclient_init()
     return;
   }
 
+  if (typeof client_handle_packet === 'undefined') {
+    swal("Bad runtime!", "Freeciv-web has not been compiled correctly, try again later or contact the admin about client_handle_packet.", "error");
+    console.error("client_handle_packet not found, freeciv-web not compiled "
+          + "correctly. Please run sync.sh.");
+    return;
+  }
+
   if ($.getUrlVar('renderer') == "webgl") {
     renderer = RENDERER_WEBGL;
   }

@@ -101,12 +101,7 @@ function websocket_init()
   ws.onopen = check_websocket_ready;
 
   ws.onmessage = function (event) {
-     if (typeof client_handle_packet !== 'undefined') {
-       client_handle_packet(jQuery.parseJSON(event.data));
-     } else {
-       console.error("Error, freeciv-web not compiled correctly. Please "
-             + "run sync.sh in freeciv-proxy correctly.");
-     }
+    client_handle_packet(jQuery.parseJSON(event.data));
   };
 
   ws.onclose = function (event) {
