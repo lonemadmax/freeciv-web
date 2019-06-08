@@ -98,7 +98,7 @@ function websocket_init()
   var port = window.location.port ? (':' + window.location.port) : '';
   ws = new WebSocket(ws_protocol + window.location.hostname + port + "/civsocket");
 
-  ws.onopen = check_websocket_ready;
+  ws.onopen = websocket_ready;
 
   ws.onmessage = function (event) {
     client_handle_packet(jQuery.parseJSON(event.data));
@@ -133,9 +133,8 @@ function websocket_init()
   When the WebSocket connection is open and ready to communicate, then
   send the first login message to the server.
 ****************************************************************************/
-function check_websocket_ready()
+function websocket_ready()
 {
-  if (ws != null && ws.readyState === 1) {
     var sha_password = null;
     var stored_password = simpleStorage.get("password", "");
     if (stored_password != null && stored_password != false) {
@@ -165,9 +164,6 @@ function check_websocket_ready()
     ping_timer = setInterval(ping_check, pingtime_check);
 
     $.unblockUI();
-  } else {
-    setTimeout(check_websocket_ready, 500);
-  }
 }
 
 /****************************************************************************
