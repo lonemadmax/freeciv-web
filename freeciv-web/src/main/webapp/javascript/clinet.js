@@ -27,6 +27,7 @@ var debug_client_speed_list = [];
 var freeciv_version = "+Freeciv.Web.Devel-3.1";
 
 var ws = null;
+var ws_errors = new Ring(5);
 var civserverport = null;
 
 var ping_last = new Date().getTime();
@@ -105,9 +106,12 @@ function websocket_init()
   };
 
   ws.onclose = function (event) {
+   console.info("WebSocket connection closed, code+reason: " + event.code + ", " + event.reason);
+   if (websocket_reconnect()) {
+      return;
+   }
    unrecoverable_error("Network Error"
             , "Connection to server is closed. Please reload the page to restart. Sorry!");
-   console.info("WebSocket connection closed, code+reason: " + event.code + ", " + event.reason);
    $("#turn_done_button").button( "option", "disabled", true);
    $("#save_button").button( "option", "disabled", true);
    pbem_phase_ended = true;
@@ -120,12 +124,15 @@ function websocket_init()
   };
 
   ws.onerror = function (evt) {
+   console.error("WebSocket error: Unable to communicate with server using "
+                 + document.location.protocol + " WebSockets. Error: " + evt);
+   if (websocket_reconnect()) {
+      return;
+   }
    unrecoverable_error("Network error"
                       , "A problem occured with the "
                         + document.location.protocol
                         + " WebSocket connection to the server: " + ws.url);
-   console.error("WebSocket error: Unable to communicate with server using "
-                 + document.location.protocol + " WebSockets. Error: " + evt);
   };
 }
 
@@ -164,6 +171,26 @@ function websocket_ready()
     ping_timer = setInterval(ping_check, pingtime_check);
 
     $.unblockUI();
+}
+
+/****************************************************************************
+  Tries to restart the WebSocket connection for intermittent errors.
+  Returns true for a retry, false for a fold.
+****************************************************************************/
+function websocket_reconnect()
+{
+   const now = new Date().getTime();
+   ws_errors.put(now);
+   const oldest = ws_errors.get(1);
+   if (oldest == null || (now - oldest) > 30000) {
+      message_log.update({
+        event: E_LOG_ERROR,
+        message: "Error: connection to server is closed. Trying to reconnect."
+      });
+      setTimeout(websocket_init, 1000);
+      return true;
+   }
+   return false;
 }
 
 /****************************************************************************
