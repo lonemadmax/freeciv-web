@@ -158,9 +158,8 @@ function set_req_government(gov_id)
 **************************************************************************/
 function send_player_change_government(govt_id)
 {
-  var packet = {"pid" : packet_player_change_government,
-                "government" : govt_id };
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_player_change_government,
+                "government" : govt_id });
 }
 
 /**************************************************************************
@@ -223,7 +222,6 @@ function can_player_get_gov(govt_id)
 **************************************************************************/
 function request_report(rtype)
 {
-  var packet = {"pid"  : packet_report_req,
-                "type" : rtype};
-  send_request(JSON.stringify(packet));
+  send_request({"pid"  : packet_report_req,
+                "type" : rtype});
 }

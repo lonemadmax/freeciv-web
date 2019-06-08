@@ -59,8 +59,6 @@ function handle_ruleset_terrain(packet)
 function handle_server_join_reply(packet)
 {
   if (packet['you_can_join']) {
-    var client_info;
-
     client.conn.established = true;
     client.conn.id = packet['conn_id'];
 
@@ -70,12 +68,11 @@ function handle_server_join_reply(packet)
       set_client_page(PAGE_START);
     }
 
-    client_info = {
+    send_request({
       "pid"          : packet_client_info,
       "gui"          : GUI_WEB,
       "distribution" : ""
-    };
-    send_request(JSON.stringify(client_info));
+    });
 
     set_client_state(C_S_PREPARING);
 
@@ -446,8 +443,7 @@ function handle_player_remove(packet)
 function handle_conn_ping(packet)
 {
   ping_last = new Date().getTime();
-  var pong_packet = {"pid" : packet_conn_pong};
-  send_request(JSON.stringify(pong_packet));
+  send_request({"pid" : packet_conn_pong});
 
 }
 
@@ -982,13 +978,12 @@ function handle_unit_actions(packet)
      * selection dialog to be answered before requesting data for the next
      * one. This lack of a queue allows it to be cleared here. */
 
-    var unqueue = {
+    send_request({
       "pid"     : packet_unit_sscs_set,
       "unit_id" : actor_unit_id,
       "type"    : USSDT_UNQUEUE,
       "value"   : IDENTITY_NUMBER_ZERO
-    };
-    send_request(JSON.stringify(unqueue));
+    });
   }
 
   if (hasActions && disturb_player) {

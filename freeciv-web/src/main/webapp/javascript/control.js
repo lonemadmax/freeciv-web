@@ -1516,7 +1516,7 @@ function do_map_click(ptile, qtype, first_time_called)
           return;
         }
         /* Send the order to move using the orders system. */
-        send_request(JSON.stringify(packet));
+        send_request(packet);
         if (punit['movesleft'] > 0) {
           unit_move_sound_play(punit);
         } else if (!has_movesleft_warning_been_shown) {
@@ -2161,8 +2161,7 @@ function send_end_turn()
 
   $("#turn_done_button").button( "option", "disabled", true);
   if (!is_touch_device()) $("#turn_done_button").tooltip({ disabled: true });
-  var packet = {"pid" : packet_player_phase_done, "turn" : game_info['turn']};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_player_phase_done, "turn" : game_info['turn']});
   update_turn_change_timer();
 
   if (is_pbem()) {
@@ -2215,13 +2214,12 @@ function key_unit_load()
     }
 
     if (has_transport_unit && transporter_unit_id > 0 && punit['tile'] > 0) {
-      var packet = {
+      send_request({
         "pid"         : packet_unit_load,
         "cargo_id"    : punit['id'],
         "transporter_id"   : transporter_unit_id,
         "transporter_tile" : punit['tile']
-      };
-      send_request(JSON.stringify(packet));
+      });
     }
   }
   setTimeout(advance_unit_focus, 700);
@@ -2243,12 +2241,11 @@ function key_unit_unload()
   for (var i = 0; i < units_on_tile.length; i++) {
     var punit = units_on_tile[i];
     if (punit['transported'] && punit['transported_by'] > 0 ) {
-      var packet = {
+      send_request({
         "pid"         : packet_unit_unload,
         "cargo_id"    : punit['id'],
         "transporter_id"   : punit['transported_by']
-      };
-      send_request(JSON.stringify(packet));
+      });
     }
   }
   setTimeout(advance_unit_focus, 700);
@@ -2576,16 +2573,12 @@ function request_unit_act_sel_vs(ptile)
 
   for (var i = 0; i < funits.length; i++) {
     var punit = funits[i];
-    var packet = {
+    send_request({
       "pid"     : packet_unit_sscs_set,
       "unit_id" : punit['id'],
       "type"    : USSDT_QUEUE,
       "value"   : ptile['index']
-    };
-
-    /* Have the server record that an action decision is wanted for this
-     * unit. */
-    send_request(JSON.stringify(packet));
+    });
   }
 }
 
@@ -2597,16 +2590,12 @@ function request_unit_act_sel_vs_own_tile()
   var funits = get_units_in_focus();
   for (var i = 0; i < funits.length; i++) {
     var punit = funits[i];
-    var packet = {
+    send_request({
       "pid"     : packet_unit_sscs_set,
       "unit_id" : punit['id'],
       "type"    : USSDT_QUEUE,
       "value"   : punit['tile']
-    };
-
-    /* Have the server record that an action decision is wanted for this
-     * unit. */
-    send_request(JSON.stringify(packet));
+    });
   }
 }
 
@@ -2645,7 +2634,7 @@ function request_unit_cancel_orders(punit)
     };
     packet.orders = packet.dir = packet.activity = packet.sub_target
                   = packet.action = [];
-    send_request(JSON.stringify(packet));
+    send_request(packet);
   }
 }
 
@@ -2655,9 +2644,8 @@ function request_unit_cancel_orders(punit)
 function request_new_unit_activity(punit, activity, target)
 {
   request_unit_cancel_orders(punit);
-  var packet = {"pid" : packet_unit_change_activity, "unit_id" : punit['id'],
-                "activity" : activity, "target" : target };
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_unit_change_activity, "unit_id" : punit['id'],
+                "activity" : activity, "target" : target });
 }
 
 
@@ -2669,8 +2657,7 @@ function request_unit_autosettlers(punit)
 {
   if (punit != null ) {
     request_unit_cancel_orders(punit);
-    var packet = {"pid" : packet_unit_autosettlers, "unit_id" : punit['id']};
-    send_request(JSON.stringify(packet));
+    send_request({"pid" : packet_unit_autosettlers, "unit_id" : punit['id']});
   }
 }
 
@@ -2694,14 +2681,12 @@ function request_unit_build_city()
 
       var ptype = unit_type(punit);
       if (ptype['name'] == "Settlers" || ptype['name'] == "Engineers") {
-        var packet = null;
         var target_city = tile_city(index_to_tile(punit['tile']));
 
         /* Do Join City if located inside a city. */
         if (target_city == null) {
-          packet = {"pid" : packet_city_name_suggestion_req,
-            "unit_id"     : punit['id'] };
-          send_request(JSON.stringify(packet));
+          send_request({"pid" : packet_city_name_suggestion_req,
+                        "unit_id": punit['id'] });
         } else {
           request_unit_do_action(ACTION_JOIN_CITY, punit.id, target_city.id);
         }
@@ -2726,14 +2711,14 @@ function request_unit_build_city()
 function request_unit_do_action(action_id, actor_id, target_id, sub_tgt_id,
                                 name)
 {
-  send_request(JSON.stringify({
+  send_request({
     pid: packet_unit_do_action,
     action_type: action_id,
     actor_id: actor_id,
     target_id: target_id,
     sub_tgt_id: sub_tgt_id !== undefined ? sub_tgt_id : EXTRA_NONE,
     name: name || ""
-  }));
+  });
 }
 
 /**************************************************************************
@@ -2792,7 +2777,7 @@ function key_unit_move(dir)
     }
 
     /* Send the order to move using the orders system. */
-    var packet = {
+    send_request({
       "pid"      : packet_unit_orders,
       "unit_id"  : punit['id'],
       "src_tile" : ptile['index'],
@@ -2805,9 +2790,8 @@ function key_unit_move(dir)
       "sub_target": [0],
       "action"   : [ACTION_COUNT],
       "dest_tile": newtile['index']
-    };
+    });
 
-    send_request(JSON.stringify(packet));
     unit_move_sound_play(punit);
   }
 
@@ -2837,15 +2821,14 @@ function process_diplomat_arrival(pdiplomat, target_tile_id)
   if (pdiplomat != null && ptile != null) {
     /* Ask the server about what actions pdiplomat can do. The server's
      * reply will pop up an action selection dialog for it. */
-    var packet = {
+    send_request({
       "pid" : packet_unit_get_actions,
       "actor_unit_id" : pdiplomat['id'],
       "target_unit_id" : IDENTITY_NUMBER_ZERO,
       "target_tile_id": target_tile_id,
       "target_extra_id": EXTRA_NONE,
       "disturb_player": true
-    };
-    send_request(JSON.stringify(packet));
+    });
   }
 }
 
@@ -2857,9 +2840,8 @@ function request_goto_path(unit_id, dst_x, dst_y)
   if (goto_request_map[unit_id + "," + dst_x + "," + dst_y] == null) {
     goto_request_map[unit_id + "," + dst_x + "," + dst_y] = true;
 
-    var packet = {"pid" : packet_goto_path_req, "unit_id" : unit_id,
-                  "goal" : map_pos_to_tile(dst_x, dst_y)['index']};
-    send_request(JSON.stringify(packet));
+    send_request({"pid" : packet_goto_path_req, "unit_id" : unit_id,
+                  "goal" : map_pos_to_tile(dst_x, dst_y)['index']});
     current_goto_turns = null;
     $("#unit_text_details").html("Choose unit goto");
     setTimeout(update_mouse_cursor, 700);
@@ -2989,9 +2971,8 @@ function popit_req(ptile)
     focus_unit_id = current_focus[0]['id'];
   }
 
-  var packet = {"pid" : packet_info_text_req, "visible_unit" : punit_id,
-                "loc" : ptile['index'], "focus_unit": focus_unit_id};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_info_text_req, "visible_unit" : punit_id,
+                "loc" : ptile['index'], "focus_unit": focus_unit_id});
 }
 
 

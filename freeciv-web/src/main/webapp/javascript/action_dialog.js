@@ -193,25 +193,23 @@ function act_sel_click_function(parent_id,
   case ACTION_SPY_BRIBE_UNIT:
   case ACTION_UPGRADE_UNIT:
     return function() {
-      var packet = {
+      send_request({
         "pid"         : packet_unit_action_query,
         "diplomat_id" : actor_unit_id,
         "target_id"   : tgt_id,
         "action_type" : action_id,
         "disturb_player" : true
-      };
-      send_request(JSON.stringify(packet));
+      });
 
       $(parent_id).remove();
     };
   case ACTION_FOUND_CITY:
     return function() {
       /* Ask the server to suggest a city name. */
-      var packet = {
+      send_request({
         "pid"     : packet_city_name_suggestion_req,
         "unit_id" : actor_unit_id
-      };
-      send_request(JSON.stringify(packet));
+      });
 
       $(parent_id).remove();
     };
@@ -357,26 +355,25 @@ function popup_action_selection(actor_unit, action_probabilities,
         click   : function() {
           var dir = get_direction_for_step(tiles[actor_unit['tile']],
                                            target_tile);
-          var packet = {
-            "pid"       : packet_unit_orders,
-            "unit_id"   : actor_unit['id'],
-            "src_tile"  : actor_unit['tile'],
-            "length"    : 1,
-            "repeat"    : false,
-            "vigilant"  : false,
-            "orders"    : [ORDER_MOVE],
-            "dir"       : [dir],
-            "activity"  : [ACTIVITY_LAST],
-            "sub_target": [0],
-            "action"    : [ACTION_COUNT],
-            "dest_tile" : target_tile['index']
-          };
 
           if (dir == -1) {
             /* Non adjacent target tile? */
             console.log("Action slection move: bad target tile");
           } else {
-            send_request(JSON.stringify(packet));
+            send_request({
+              "pid"       : packet_unit_orders,
+              "unit_id"   : actor_unit['id'],
+              "src_tile"  : actor_unit['tile'],
+              "length"    : 1,
+              "repeat"    : false,
+              "vigilant"  : false,
+              "orders"    : [ORDER_MOVE],
+              "dir"       : [dir],
+              "activity"  : [ACTIVITY_LAST],
+              "sub_target": [0],
+              "action"    : [ACTION_COUNT],
+              "dest_tile" : target_tile['index']
+            });
           }
 
           $(id).remove();
@@ -808,15 +805,14 @@ function create_select_tgt_unit_button(parent_id, actor_unit_id,
   button = {
     text  : text,
     click : function() {
-      var packet = {
+      send_request({
         "pid"            : packet_unit_get_actions,
         "actor_unit_id"  : actor_unit_id,
         "target_unit_id" : target_unit_id,
         "target_tile_id" : target_tile_id,
         "target_extra_id": EXTRA_NONE,
         "disturb_player" : true
-      };
-      send_request(JSON.stringify(packet));
+      });
 
       $(parent_id).remove();
     }
@@ -932,15 +928,14 @@ function create_select_tgt_extra_button(parent_id, actor_unit_id,
   button = {
     text  : text,
     click : function() {
-      var packet = {
+      send_request({
         "pid"            : packet_unit_get_actions,
         "actor_unit_id"  : actor_unit_id,
         "target_unit_id" : target_unit_id,
         "target_tile_id" : target_tile_id,
         "target_extra_id": target_extra_id,
         "disturb_player" : true
-      };
-      send_request(JSON.stringify(packet));
+      });
 
       $(parent_id).remove();
     }

@@ -356,10 +356,9 @@ function withdraw_vision_clicked()
 {
   if (selected_player == -1) return;
 
-  var packet = {"pid" : packet_diplomacy_cancel_pact,
+  send_request({"pid" : packet_diplomacy_cancel_pact,
                 "other_player_id" : selected_player,
-                "clause" : CLAUSE_VISION};
-  send_request(JSON.stringify(packet));
+                "clause" : CLAUSE_VISION});
   set_default_mapview_active();
 }
 
@@ -476,9 +475,8 @@ function center_on_player()
 function send_private_message(other_player_name)
 {
   var message = other_player_name + ": " + encode_message_text($("#private_message_text").val());
-  var packet = {"pid" : packet_chat_msg_req,
-                "message" : message};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_chat_msg_req,
+                "message" : message});
   keyboard_input = true;
   $("#dialog").dialog('close');
 }

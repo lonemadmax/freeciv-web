@@ -319,9 +319,8 @@ function update_sci_rates ()
 function submit_player_rates()
 {
   if (tax >= 0 && tax <= 100 && lux >= 0 && lux <= 100 && sci >= 0 && sci <= 100) {
-    var packet = {"pid" : packet_player_rates,
-                  "tax" : tax, "luxury" : lux, "science" : sci };
-    send_request(JSON.stringify(packet));
+    send_request({"pid" : packet_player_rates,
+                  "tax" : tax, "luxury" : lux, "science" : sci });
   } else {
     swal("Invalid tax rate values");
   }

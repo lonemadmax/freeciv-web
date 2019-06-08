@@ -37,9 +37,8 @@ var diplomacy_clause_map = {};
 **************************************************************************/
 function diplomacy_init_meeting_req(counterpart)
 {
-  var packet = {"pid" : packet_diplomacy_init_meeting_req,
-	        "counterpart" : counterpart};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_diplomacy_init_meeting_req,
+                "counterpart" : counterpart});
 }
 
 
@@ -58,9 +57,8 @@ function show_diplomacy_dialog(counterpart)
 **************************************************************************/
 function accept_treaty_req(counterpart_id)
 {
-  var packet = {"pid" : packet_diplomacy_accept_treaty_req,
-                "counterpart" : counterpart_id};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_diplomacy_accept_treaty_req,
+                "counterpart" : counterpart_id});
 }
 
 /**************************************************************************
@@ -112,9 +110,8 @@ function accept_treaty(counterpart, I_accepted, other_accepted)
 **************************************************************************/
 function cancel_meeting_req(counterpart_id)
 {
-  var packet = {"pid" : packet_diplomacy_cancel_meeting_req,
-	        "counterpart" : counterpart_id};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_diplomacy_cancel_meeting_req,
+                "counterpart" : counterpart_id});
 }
 
 /**************************************************************************
@@ -133,12 +130,11 @@ function create_clause_req(counterpart_id, giver, type, value)
     }
   }
 
-  var packet = {"pid" : packet_diplomacy_create_clause_req,
+  send_request({"pid" : packet_diplomacy_create_clause_req,
                 "counterpart" : counterpart_id,
                 "giver" : giver,
                 "type" : type,
-                "value" : value};
-  send_request(JSON.stringify(packet));
+                "value" : value});
 }
 
 
@@ -199,12 +195,11 @@ function remove_clause_req(counterpart_id, clause_no)
   var clauses = diplomacy_clause_map[counterpart_id];
   var clause = clauses[clause_no];
 
-  var packet = {"pid" : packet_diplomacy_remove_clause_req,
-	            "counterpart" : clause['counterpart'],
+  send_request({"pid" : packet_diplomacy_remove_clause_req,
+                "counterpart" : clause['counterpart'],
                 "giver": clause['giver'],
                 "type" : clause['type'],
-                "value": clause['value'] };
-  send_request(JSON.stringify(packet));
+                "value": clause['value'] });
 }
 
 /**************************************************************************
@@ -283,10 +278,9 @@ function client_diplomacy_clause_string(counterpart, giver, type, value)
 **************************************************************************/
 function diplomacy_cancel_treaty(player_id)
 {
-  var packet = {"pid" : packet_diplomacy_cancel_pact,
-	        "other_player_id" : player_id,
-                "clause" : DS_CEASEFIRE};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_diplomacy_cancel_pact,
+                "other_player_id" : player_id,
+                "clause" : DS_CEASEFIRE});
 
   update_nation_screen();
 
@@ -454,12 +448,11 @@ function meeting_gold_change_req(counterpart_id, giver, gold)
   }
 
   if (gold != 0) {
-    var packet = {"pid" : packet_diplomacy_create_clause_req,
+    send_request({"pid" : packet_diplomacy_create_clause_req,
                   "counterpart" : counterpart_id,
                   "giver" : giver,
                   "type" : CLAUSE_GOLD,
-                  "value" : gold};
-    send_request(JSON.stringify(packet));
+                  "value" : gold});
   }
 }
 

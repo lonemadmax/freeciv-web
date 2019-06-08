@@ -454,8 +454,7 @@ function scroll_tech_tree()
 **************************************************************************/
 function send_player_research(tech_id)
 {
-  var packet = {"pid" : packet_player_research, "tech" : tech_id};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_player_research, "tech" : tech_id});
   $("#tech_dialog").dialog('close');
 }
 
@@ -464,8 +463,7 @@ function send_player_research(tech_id)
 **************************************************************************/
 function send_player_tech_goal(tech_id)
 {
-  var packet = {"pid" : packet_player_tech_goal, "tech" : tech_id};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_player_tech_goal, "tech" : tech_id});
 }
 
 /****************************************************************************

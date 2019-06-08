@@ -44,10 +44,8 @@ function pregame_start_game()
     send_message("/set autotoggle disabled");
   }
 
-  var test_packet = {"pid" : packet_player_ready, "is_ready" : true,
-                     "player_no": client.conn['player_num']};
-  var myJSONText = JSON.stringify(test_packet);
-  send_request(myJSONText);
+  send_request({"pid" : packet_player_ready, "is_ready" : true,
+                "player_no": client.conn['player_num']});
 
   setup_window_size ();
 }
@@ -456,13 +454,12 @@ function submit_nation_choice()
     style = chosen_style;
   }
 
-  var test_packet = {"pid" : packet_nation_select_req,
+  send_request(     {"pid" : packet_nation_select_req,
                      "player_no" : choosing_player,
                      "nation_no" : chosen_nation,
                      "is_male" : true, /* FIXME */
                      "name" : leader_name,
-                     "style" : style};
-  send_request(JSON.stringify(test_packet));
+                     "style" : style});
   clearInterval(nation_select_id);
 
   if (is_longturn()) {
@@ -841,8 +838,7 @@ function pregame_settings()
       confirmButtonText: "Yes, set game password",   
       closeOnConfirm: true }, 
       function(){   
-        var pwd_packet = {"pid" : packet_authentication_reply, "password" : $('#password').val()};
-        send_request(JSON.stringify(pwd_packet));
+        send_request({"pid" : packet_authentication_reply, "password" : $('#password').val()});
         send_message("/metamessage Private password-protected game");
         metamessage_changed = true;
         $("#metamessage").prop('readonly', true);

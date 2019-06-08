@@ -155,12 +155,11 @@ function websocket_ready()
       return;
     }
 
-    var login_message = {"pid":4, "username" : username,
+    send_request({"pid":4, "username" : username,
     "capability": freeciv_version, "version_label": "-dev",
     "major_version" : 2, "minor_version" : 5, "patch_version" : 99,
     "port": civserverport,
-    "password": google_user_token == null ? sha_password : google_user_token};
-    ws.send(JSON.stringify(login_message));
+    "password": google_user_token == null ? sha_password : google_user_token});
 
     /* Leaving the page without saving can now be an issue. */
     $(window).bind('beforeunload', function(){
@@ -208,7 +207,7 @@ function network_stop()
 function send_request(packet_payload)
 {
   if (ws != null) {
-    ws.send(packet_payload);
+    ws.send(JSON.stringify(packet_payload));
   }
 
   if (debug_active) {
@@ -269,7 +268,6 @@ function send_message(message)
     }
   }
 
-  var packet = {"pid" : packet_chat_msg_req, 
-                "message" : message};
-  send_request(JSON.stringify(packet));
+  send_request({"pid" : packet_chat_msg_req,
+                "message" : message});
 }

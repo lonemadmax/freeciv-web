@@ -591,9 +591,7 @@ function show_auth_dialog(packet) {
 			buttons:
 			{
 				"Ok" : function() {
-                                  var pwd_packet = {"pid" : packet_authentication_reply, "password" : $('#password_req').val()};
-                                  var myJSONText = JSON.stringify(pwd_packet);
-                                  send_request(myJSONText);
+                                  send_request({"pid" : packet_authentication_reply, "password" : $('#password_req').val()});
 
                                   $("#dialog").dialog('close');
 				}
