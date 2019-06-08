@@ -102,7 +102,7 @@ function websocket_init()
   ws.onopen = websocket_ready;
 
   ws.onmessage = function (event) {
-    client_handle_packet(jQuery.parseJSON(event.data));
+    client_handle_packet(JSON.parse(event.data));
   };
 
   ws.onclose = function (event) {
