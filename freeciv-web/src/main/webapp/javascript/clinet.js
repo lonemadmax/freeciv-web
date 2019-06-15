@@ -150,7 +150,7 @@ function websocket_ready()
       sha_password = encodeURIComponent(shaObj.getHash("HEX"));
     }
 
-    if (is_longturn() && google_user_token == null) {
+    if (get_game_auth_method() == "google" && google_user_token == null) {
       unrecoverable_error("Login failed.", "This game requires a Google login");
       return;
     }

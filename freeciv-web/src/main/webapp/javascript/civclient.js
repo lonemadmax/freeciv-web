@@ -699,3 +699,20 @@ function is_longturn()
 {
   return game_type == "longturn";
 }
+
+/**************************************************************************
+ What kind of login does this game want?
+**************************************************************************/
+function get_game_auth_method()
+{
+  if (is_longturn()) {
+    const g_signin_meta = document.head.querySelector("meta[name='google-signin-client_id']");
+    if (g_signin_meta != null) {
+      const g_signin_key = g_signin_meta.getAttribute("content");
+      if (g_signin_key != null && g_signin_key != "") {
+        return "google";
+      }
+    }
+  }
+  return "password";
+}

@@ -1179,20 +1179,24 @@ function show_longturn_intro_dialog() {
         "occur in a standard multi-player Freeciv game. It takes a lot longer to play a game, about 2 to 6 months, but you can play it just a "+
         "little bit every day. <br><br> "+
         "Please be polite to the other players and don't cheat. "+
-        "Contact a moderator at <a style='color: black;' href='mailto:freeciv-web-moderation@tutanota.com'>freeciv-web-moderation@tutanota.com</a> "+
-        "to report players who behave badly or cheat.<br><br>" +
-        "You will get to play for turn immediately after signing up, and your next turn tomorrow. Please join the game only if you are interested in playing one turn every day. " +
+        "<br>You will get to play your turn immediately after signing up, and your next turn tomorrow. Please join the game only if you are interested in playing one turn every day. " +
         "Players who are idle for more than 12 turns can be replaced by new players. This means that idle players will continually be replaced by new players.<br><br>" +
-        "Joining this game requires signing in with a player name and validated Google Account."+
-        "<br><br><br><table><tr><td>Player name:</td><td><input id='username_req' type='text' size='25' maxlength='31'></td></tr></table>" +
-        " <br><br><span id='username_validation_result' style='display:none;'></span><br>" +
+        "<br><br><br><table><tr><td>Player name:</td><td><input id='username_req' type='text' size='25' maxlength='31'></td></tr>" +
+        "<tr id='password_row' style='display:none;'><td>Password:</td><td id='password_td'></td></tr></table>" +
+        " <br><br><span id='username_validation_result' style='display:none;'></span><br>";
+  if (get_game_auth_method() == "google") {
+    message = message +
         "<div id='fc-signin2'></div><br><br><br><small>(Please disable adblockers, then reload the page, for Google login button to work)</small>";
+  }
 
   if (is_small_screen()) {
     message = "Welcome to this Freeciv-web: One Turn per Day game! Enter your player name:"+
-      "<br><br><table><tr><td>Player name:</td><td><input id='username_req' type='text' size='25' maxlength='31'></td></tr></table>" +
-      " <br><br><span id='username_validation_result' style='display:none;'></span><br><br>" +
-      "<div id='fc-signin2'></div><br>";
+      "<br><br><table><tr><td>Player name:</td><td><input id='username_req' type='text' size='25' maxlength='31'></td></tr>";
+      "<tr id='password_row' style='display:none;'><td>Password:</td><td id='password_td'></td></tr></table>" +
+      " <br><br><span id='username_validation_result' style='display:none;'></span><br>"
+    if (get_game_auth_method() == "google") {
+      message = message + "<div id='fc-signin2'></div><br>";
+    }
   }
 
   // reset dialog page.
@@ -1205,6 +1209,27 @@ function show_longturn_intro_dialog() {
     $("#username_req").val(stored_username);
   }
 
+  var buttons = [];
+
+  if (get_game_auth_method() == "password") {
+    $("#password_row").show();
+    $("#password_td").html("<input id='password_req' type='password' size='25' maxlength='200'>");
+    var stored_password = simpleStorage.get("password", "");
+    if (stored_password != null && stored_password != false) {
+      $("#password_req").val(stored_password);
+    }
+    buttons.push({
+      text : "Join Game",
+      click : function() {
+        if (is_touch_device() || is_small_screen()) {
+          BigScreen.toggle();
+        }
+        dialog_close_trigger = "button";
+        validate_username_callback();
+      },
+      icons: { primary: "ui-icon-play" }
+    });
+  }
 
   $("#dialog").attr("title", title);
   $("#dialog").dialog({
@@ -1223,9 +1248,10 @@ function show_longturn_intro_dialog() {
 			    }
 			  }
 			},
-			buttons: []
+			buttons: buttons
 
 		});
+
 
   if (is_small_screen()) {
     /* some fixes for pregame screen on small devices.*/
@@ -1239,6 +1265,7 @@ function show_longturn_intro_dialog() {
   blur_input_on_touchdevice();
 
   google_user_token = null;
+  if (get_game_auth_method() == "google") {
  gapi.signin2.render('fc-signin2', {
         'scope': 'profile email',
         'width': 240,
@@ -1246,7 +1273,7 @@ function show_longturn_intro_dialog() {
         'onsuccess': google_signin_on_success,
         'onfailure': google_signin_on_failure
       });
-
+  }
 }
 
 /**************************************************************************
