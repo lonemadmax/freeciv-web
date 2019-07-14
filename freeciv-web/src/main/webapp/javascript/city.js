@@ -273,7 +273,7 @@ function show_city_dialog(pcity)
        }
 
       improvements_html = improvements_html +
-       "<div id='city_improvement_element'><div style='background: transparent url("
+       "<div class='city_improvement_element'><div style='background: transparent url("
            + sprite['image-src'] +
            ");background-position:-" + sprite['tileset-x'] + "px -" + sprite['tileset-y']
            + "px;  width: " + sprite['width'] + "px;height: " + sprite['height'] + "px;float:left; '"

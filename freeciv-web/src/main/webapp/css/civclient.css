@@ -356,7 +356,7 @@ button {
   margin: -7px -6px 7px -6px;
 }
 
-#city_improvement_element {
+.city_improvement_element {
   text-align: center; 
   color: #ffffff; 
   width: 70px; 
