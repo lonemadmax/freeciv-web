@@ -276,7 +276,7 @@ function show_city_dialog(pcity)
        "<div class='city_improvement_element'><div style='background: transparent url("
            + sprite['image-src'] +
            ");background-position:-" + sprite['tileset-x'] + "px -" + sprite['tileset-y']
-           + "px;  width: " + sprite['width'] + "px;height: " + sprite['height'] + "px;float:left; '"
+           + "px;  width: " + sprite['width'] + "px;height: " + sprite['height'] + "px;' "
            + "title=\"" + improvements[z]['helptext'] + "\" "
 	   + "onclick='city_sell_improvement(" + z + ");'>"
            +"</div><div>" + improvements[z]['name'] + "</div></div>";

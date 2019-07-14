@@ -362,7 +362,9 @@ button {
   width: 70px; 
   cursor:pointer; 
   cursor:hand;
-  float: left;
+  margin: 5px;
+  display: inline-block;
+  vertical-align: text-top;
 }
 
 
