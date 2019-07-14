@@ -279,7 +279,7 @@ function show_city_dialog(pcity)
            + "px;  width: " + sprite['width'] + "px;height: " + sprite['height'] + "px;float:left; '"
            + "title=\"" + improvements[z]['helptext'] + "\" "
 	   + "onclick='city_sell_improvement(" + z + ");'>"
-           +"</div>" + improvements[z]['name'] + "</div>";
+           +"</div><div>" + improvements[z]['name'] + "</div></div>";
     }
   }
   $("#city_improvements_list").html(improvements_html);
