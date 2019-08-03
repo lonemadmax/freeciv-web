@@ -810,11 +810,7 @@ function advance_unit_focus()
 {
   if (client_is_observer()) return;
 
-  var candidate = find_best_focus_candidate(false);
-
-  if (candidate == null) {
-    candidate = find_best_focus_candidate(true);
-  }
+  var candidate = find_best_focus_candidate();
 
   if (candidate != null) {
     set_unit_focus_and_redraw(candidate);
@@ -1130,11 +1126,10 @@ function init_game_unit_panel()
 }
 
 /**************************************************************************
- Find the nearest available unit for focus, excluding any current unit
- in focus unless "accept_current" is TRUE.  If the current focus unit
- is the only possible unit, or if there is no possible unit, returns NULL.
+ Find the nearest available unit for focus, with the current units in focus
+ having the least priority. Returns null when no suitable unit is found.
 **************************************************************************/
-function find_best_focus_candidate(accept_current)
+function find_best_focus_candidate()
 {
   var punit;
   var i;
@@ -1157,7 +1152,7 @@ function find_best_focus_candidate(accept_current)
 
   for (i = 0; i < sorted_units.length; i++) {
     punit = sorted_units[i];
-    if ((accept_current || !unit_is_in_focus(punit))
+    if ((!unit_is_in_focus(punit))
        && waiting_units_list.indexOf(punit['id']) < 0) {
          return punit;
     }
@@ -1167,9 +1162,14 @@ function find_best_focus_candidate(accept_current)
   waiting_units_list = [];
   for (i = 0; i < sorted_units.length; i++) {
     punit = sorted_units[i];
-    if (accept_current || !unit_is_in_focus(punit)) {
+    if (!unit_is_in_focus(punit)) {
       return punit;
     }
+  }
+
+  /* Only the units in focus are left */
+  if (sorted_units.length > 0) {
+    return sorted_units[0];
   }
 
   return null;
