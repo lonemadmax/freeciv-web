@@ -1164,12 +1164,12 @@ function find_best_focus_candidate(accept_current)
   }
 
   /* check waiting units for focus candidates */
-  for (i = 0; i < waiting_units_list.length; i++) {
-      punit = game_find_unit_by_number(waiting_units_list[i]);
-      if (punit != null && punit['movesleft'] > 0) {
-        waiting_units_list.splice(i, 1);
-        return punit;
-      }
+  waiting_units_list = [];
+  for (i = 0; i < sorted_units.length; i++) {
+    punit = sorted_units[i];
+    if (accept_current || !unit_is_in_focus(punit)) {
+      return punit;
+    }
   }
 
   return null;
