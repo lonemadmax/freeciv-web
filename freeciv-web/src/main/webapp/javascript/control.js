@@ -1143,7 +1143,13 @@ function find_best_focus_candidate(accept_current)
   var sorted_units = [];
   for (var unit_id in units) {
     punit = units[unit_id];
-    if (client.conn.playing != null && punit['owner'] == client.conn.playing.playerno) {
+    if (client.conn.playing != null
+        && punit['owner'] == client.conn.playing.playerno
+        && punit['activity'] == ACTIVITY_IDLE
+        && punit['movesleft'] > 0
+        && punit['done_moving'] == false
+        && punit['ai'] == false
+        && punit['transported'] == false) {
       sorted_units.push(punit);
     }
   }
@@ -1151,15 +1157,8 @@ function find_best_focus_candidate(accept_current)
 
   for (i = 0; i < sorted_units.length; i++) {
     punit = sorted_units[i];
-    if ((!unit_is_in_focus(punit) || accept_current)
-       && client.conn.playing != null
-       && punit['owner'] == client.conn.playing.playerno
-       && punit['activity'] == ACTIVITY_IDLE
-       && punit['movesleft'] > 0
-       && punit['done_moving'] == false
-       && punit['ai'] == false
-       && waiting_units_list.indexOf(punit['id']) < 0
-       && punit['transported'] == false) {
+    if ((accept_current || !unit_is_in_focus(punit))
+       && waiting_units_list.indexOf(punit['id']) < 0) {
          return punit;
     }
   }
