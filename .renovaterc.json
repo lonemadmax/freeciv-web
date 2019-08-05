@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "config:base"
+   ,":preserveSemverRanges"
+   ,":unpublishSafe"
+   ,":prNotPending"
+  ]
+, "separateMultipleMajor": true
+, "vulnerabilityAlerts": {
+    "labels": ["security"]
+  }
+, "ignorePaths": [
+    "**/webgl-inspector/**"
+  ]
+, "packageRules": [
+    {
+      "packagePatterns": ["^taglibs:"]
+    , "groupName": ["taglibs"]
+    }
+  , {
+      "packagePatterns": ["^com\\.google\\.[^:]*-client:"]
+    , "groupName": ["google clients"]
+    }
+  , {
+      "packagePatterns": ["^org\\.apache\\.maven\\.plugins:"]
+    , "groupName": ["apache maven plugins"]
+    }
+  ]
+}
