@@ -296,7 +296,7 @@ Rerun the sync-js-hand.js script.
 						<dependency>
 							<groupId>com.google.javascript</groupId>
 							<artifactId>closure-compiler</artifactId>
-							<version>v20180716</version>
+							<version>v20190819</version>
 						</dependency>
 					</dependencies>
 					<configuration>
