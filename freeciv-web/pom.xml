@@ -41,13 +41,13 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.12</version>
+			<version>1.13</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
-			<version>1.7</version>
+			<version>1.8</version>
 		</dependency>
 
 		<dependency>
@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.47</version>
+			<version>5.1.48</version>
 		</dependency>
 
 		<dependency>
@@ -78,25 +78,25 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20170516</version>
+			<version>20190722</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.2</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
 			<scope>runtime</scope>
-			<version>1.1.1</version>
+			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>c</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.2</version>
 			<scope>runtime</scope>
 			<type>tld</type>
 		</dependency>
