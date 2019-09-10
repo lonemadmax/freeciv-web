@@ -130,8 +130,9 @@ class CivCom(Thread):
         self.send_packets_to_client()
         self.send_packets_to_civserver()
 
-        if (hasattr(self.civwebserver, "civcoms") and self.key in list(self.civwebserver.civcoms.keys())):
-            del self.civwebserver.civcoms[self.key]
+        if self.civwebserver is not None:
+            conn = self.civwebserver
+            conn.io_loop.add_callback(lambda: conn.close())
 
         if (self.socket is not None):
             self.socket.close()
