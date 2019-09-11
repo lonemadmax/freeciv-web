@@ -115,12 +115,6 @@ function websocket_init()
    $("#turn_done_button").button( "option", "disabled", true);
    $("#save_button").button( "option", "disabled", true);
    pbem_phase_ended = true;
-
-   /* The player can't save the game after the connection is down. */
-   $(window).unbind('beforeunload');
-
-   /* Don't ping a dead connection. */
-   clearInterval(ping_timer);
   };
 
   ws.onerror = function (evt) {
@@ -178,6 +172,7 @@ function websocket_ready()
 ****************************************************************************/
 function websocket_reconnect()
 {
+   network_stop();
    const now = new Date().getTime();
    ws_errors.put(now);
    const oldest = ws_errors.get(1);
@@ -197,8 +192,18 @@ function websocket_reconnect()
 ****************************************************************************/
 function network_stop()
 {
-  if (ws != null) ws.close();
-  ws = null;
+  const cws = ws;
+
+  /* Don't ping a dead connection. */
+  clearInterval(ping_timer);
+
+  /* The player can't save the game after the connection is down. */
+  $(window).unbind('beforeunload');
+
+  if (cws != null) {
+    ws = cws.onopen = cws.onmessage = cws.onclose = cws.onerror = null;
+    cws.close();
+  }
 }
 
 /****************************************************************************

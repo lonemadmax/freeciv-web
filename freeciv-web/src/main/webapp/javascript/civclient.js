@@ -373,6 +373,7 @@ function show_dialog_message(title, message) {
  Shows an error dialog which gets out of the game on close.
 **************************************************************************/
 function unrecoverable_error(title, text, html) {
+    network_stop();
     text = text || title;
     swal({title: title
         , text: text || title
