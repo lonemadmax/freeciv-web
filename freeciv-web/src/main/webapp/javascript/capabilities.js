@@ -195,6 +195,7 @@ const fc_capabilities = (function () {
 
     /** Array of capstrings we can use, in order of preference */
     const ourCaps = [
+        new Capabilities('+Freeciv.Devel-3.1-2018.Nov.20 +CityCanBuild +CityTileOutput +HtmlMessages +GotoPF +TileInfo'),
         new Capabilities('+Freeciv.Web.Devel-3.1'),
     ];
     /**

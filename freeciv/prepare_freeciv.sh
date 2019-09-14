@@ -15,13 +15,8 @@ else
   DL_FREECIV=dl_freeciv_default.sh
 fi
 
-if ! ./$DL_FREECIV $FCREV ; then
+if ! ./$DL_FREECIV "${FCREV}" "${FCREPO}" "${FCBRANCH}"; then
   echo "Git checkout failed" >&2
-  exit 1
-fi
-
-if ! ./apply_patches.sh ; then
-  echo "Patching failed" >&2
   exit 1
 fi
 

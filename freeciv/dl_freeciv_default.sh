@@ -15,7 +15,7 @@ rm -Rf freeciv
 # The download step saves having to merge in Freeciv's history each time the
 # Freeciv server revision is updated.
 echo "  fetching missing revisions"
-git cat-file -e $1 || git fetch --no-tags https://github.com/freeciv/freeciv.git master:freeciv_master
+git cat-file -e $1 || git fetch --no-tags "$2" "$3":freeciv_"$3"
 
 # Place the requested Freeciv revision in the freeciv/freeciv folder.
 # The checkout isn't owned by git. This means that the patches automatically

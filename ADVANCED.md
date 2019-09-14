@@ -59,6 +59,7 @@ Freeciv-web's Freeciv version is set in
 The variable FCREV is set to the Git revision it should use.
 The latest version of Freeciv's master branch can be found in the
 [Freeciv Git repository](https://github.com/freeciv/freeciv/).
+The changes used in this server are in (https://github.com/lonemadmax/freeciv/).
 
 ## Freeciv version upgrade checklist
 
@@ -70,16 +71,8 @@ checked.
 
 The new Freeciv version could have new bugs.
 
-Freeciv-web [patches](freeciv/apply_patches.sh) may have been accepted.
-
 Be careful when Freeciv changes
 `bootstrap/freeciv.project configure.ac m4/ data/ common/networking/dataio_json.* common/networking/packets.def fc_version server/save*`
-
-### Check: Freeciv commit log messages
-
-Was a [patch](freeciv/patches/) accepted into the new Freeciv version?
-Remove the patch file.
-Update [apply_patches.sh](freeciv/apply_patches.sh).
 
 ### Check: [Freeciv's bug tracker](https://www.hostedredmine.com/projects/freeciv)
 
