@@ -61,6 +61,7 @@ function handle_server_join_reply(packet)
   if (packet['you_can_join']) {
     client.conn.established = true;
     client.conn.id = packet['conn_id'];
+    fc_capabilities.setTheirCapabilities(packet.capability);
 
     if (get_client_page() == PAGE_MAIN
 	|| get_client_page() == PAGE_NETWORK
