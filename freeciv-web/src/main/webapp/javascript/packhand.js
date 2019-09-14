@@ -112,6 +112,17 @@ function handle_server_join_reply(packet)
 
   } else {
 
+    const serverCaps = fc_capabilities.parse(packet.capability);
+    const knownCaps = fc_capabilities.getTheirCapabilities();
+    if (knownCaps == null || knownCaps.capstring != serverCaps.capstring) {
+      if (fc_capabilities.setTheirCapabilities(serverCaps)) {
+        /* The server will close the connection and we'll retry with a new,
+         * compatible capstring.
+         */
+        return;
+      }
+    }
+
     unrecoverable_error("You were rejected from the game."
                         , (packet['message'] || ""));
     client.conn.id = -1;/* not in range of conn_info id */

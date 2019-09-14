@@ -526,7 +526,6 @@ function show_fullscreen_window()
 **************************************************************************/
 function show_debug_info()
 {
-  console.log("Freeciv version: " + freeciv_version);
   console.log("Browser useragent: " + navigator.userAgent);
   console.log("jQuery version: " + $().jquery);
   console.log("jQuery UI version: " + $.ui.version);
