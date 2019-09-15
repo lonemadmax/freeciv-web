@@ -218,7 +218,10 @@ function add_chatbox_text(packet)
       text = text.replace(/#0000FF/g, '#5555FF')
                  .replace(/#006400/g, '#00AA00')
                  .replace(/#551166/g, '#AA88FF')
-                 .replace(/#A020F0/g, '#F020FF');
+                 .replace(/#A020F0/g, '#F020FF')
+                 .replace(/#8B0000/g, '#FFFFFF')
+                 .replace(/#00008B/g, '#FFFFFF')
+                 ;
     }
 
     packet['message'] = text;
