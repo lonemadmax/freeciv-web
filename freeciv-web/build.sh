@@ -30,6 +30,6 @@ else
 fi
 
 echo "maven package"
-mvn ${BATCH_MODE} flyway:migrate package && \
+mvn ${BATCH_MODE} -Dflyway.configFiles="${DIR}/flyway.properties" flyway:migrate package && \
 echo "Copying target/freeciv-web.war to ${TOMCATDIR}/webapps" && \
   cp target/freeciv-web.war "${TOMCATDIR}/webapps/"

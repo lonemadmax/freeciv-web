@@ -36,9 +36,9 @@ There is also a build-js.sh script to build just JavaScript quickly for developm
 
 The build script will also create a data webapp directory where savegames and scorelogs are stored.
 
-Flyway migrations of the database is supported. Remember to set the mysql password in flyway.properties.dist and rename the file to flyway.properties.
+Flyway migration of the database is supported.
 To migrate the database to the latest version, run this Maven command:
-mvn flyway:migrate
+mvn -Dflyway.configFiles=flyway.properties flyway:migrate
 
 The following files contain DB, mail and other configuration, and must be set manually
 if you are not using vagrant or the install script:
