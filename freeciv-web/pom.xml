@@ -185,16 +185,16 @@ Rerun the sync-js-hand.js script.
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>native2ascii-maven-plugin</artifactId>
-					<version>1.0-beta-1</version>
+					<version>2.0.1</version>
 					<executions>
 						<execution>
 							<id>native2ascii-utf8-resources</id>
 							<goals>
-								<goal>native2ascii</goal>
+								<goal>resources</goal>
 							</goals>
 							<configuration>
-								<dest>target/resources/i18n</dest>
-								<src>src/main/resources/i18n</src>
+								<targetDir>${project.build.outputDirectory}/i18n</targetDir>
+								<srcDir>src/main/resources/i18n</srcDir>
 								<encoding>UTF-8</encoding>
 								<includes>
 									<include>**/text*.properties</include>
