@@ -1191,9 +1191,9 @@ function show_longturn_intro_dialog() {
 
   if (is_small_screen()) {
     message = "Welcome to this Freeciv-web: One Turn per Day game! Enter your player name:"+
-      "<br><br><table><tr><td>Player name:</td><td><input id='username_req' type='text' size='25' maxlength='31'></td></tr>";
+      "<br><br><table><tr><td>Player name:</td><td><input id='username_req' type='text' size='25' maxlength='31'></td></tr>" +
       "<tr id='password_row' style='display:none;'><td>Password:</td><td id='password_td'></td></tr></table>" +
-      " <br><br><span id='username_validation_result' style='display:none;'></span><br>"
+      " <br><br><span id='username_validation_result' style='display:none;'></span><br>";
     if (get_game_auth_method() == "google") {
       message = message + "<div id='fc-signin2'></div><br>";
     }
