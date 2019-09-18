@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<derived-webapp.dir>${basedir}/src/derived/webapp</derived-webapp.dir>
-		<generated-js.dir>${project.build.directory}/generated-sources/javascript</generated-js.dir>
+		<generated-js.dir>${project.build.directory}/${project.build.finalName}/javascript</generated-js.dir>
 	</properties>
 
 	<repositories>
@@ -207,35 +207,6 @@ Rerun the sync-js-hand.js script.
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.1.0</version>
-					<executions>
-						<execution>
-							<id>copy-generated-webapp-resources</id>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>copy-resources</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
-								<resources>
-									<resource>
-										<directory>${derived-webapp.dir}</directory>
-										<excludes>
-											<exclude>.gitignore</exclude>
-											<exclude>README.md</exclude>
-											<exclude>javascript/*.js</exclude>
-											<!-- NOT excluding `javascript/2dcavas/*` -->
-										</excludes>
-									</resource>
-								</resources>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.8</version>
 					<executions>
@@ -289,6 +260,50 @@ Rerun the sync-js-hand.js script.
 				</plugin>
 
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.1.0</version>
+					<executions>
+						<execution>
+							<id>copy-generated-webapp-resources</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+								<resources>
+									<resource>
+										<directory>${derived-webapp.dir}</directory>
+										<excludes>
+											<exclude>.gitignore</exclude>
+											<exclude>README.md</exclude>
+											<exclude>javascript/2dcanvas/*trident*</exclude>
+										</excludes>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+						<execution>
+							<!-- I just want to have all the js together -->
+							<id>copy-javascript</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/${project.build.finalName}/javascript</outputDirectory>
+								<resources>
+									<resource>
+										<directory>${basedir}/src/main/webapp/javascript</directory>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
 					<groupId>com.samaxes.maven</groupId>
 					<artifactId>minify-maven-plugin</artifactId>
 					<version>1.7.6</version>
@@ -305,9 +320,8 @@ Rerun the sync-js-hand.js script.
 						<closureCreateSourceMap>true</closureCreateSourceMap>
 					</configuration>
 					<executions>
-						<!-- Create minified common webclient.min.js and css -->
 						<execution>
-							<id>default-minify</id>
+							<id>minify-webclient.css</id>
 							<configuration>
 								<cssFinalFile>webclient.css</cssFinalFile>
 								<cssSourceFiles>
@@ -323,6 +337,16 @@ Rerun the sync-js-hand.js script.
 									<cssSourceFile>pregame.css</cssSourceFile>
 									<cssSourceFile>civclient.css</cssSourceFile>
 								</cssSourceFiles>
+							</configuration>
+							<goals>
+								<goal>minify</goal>
+							</goals>
+						</execution>
+						<!-- Create minified common webclient.min.js -->
+						<execution>
+							<id>minify-webclient.js</id>
+							<configuration>
+								<webappSourceDir>${project.build.directory}/${project.build.finalName}</webappSourceDir>
 								<jsSourceDir>javascript</jsSourceDir>
 								<jsFinalFile>webclient.js</jsFinalFile>
 								<jsSourceFiles>
@@ -332,13 +356,6 @@ Rerun the sync-js-hand.js script.
 									<jsSourceFile>map-constants.js</jsSourceFile>
 									<jsSourceFile>2dcanvas/tilespec-constants.js</jsSourceFile>
 									<!-- these must be listed here, jsSourceIncludes doesn't work -->
-									<jsSourceFile>../../../derived/webapp/javascript/fc_events.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/freeciv-helpdata.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/packets.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/packhand_gen.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/soundset_spec.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/2dcanvas/tileset_spec_amplio2.js</jsSourceFile>
-									<jsSourceFile>../../../../target/generated-sources/javascript/hbs-templates.js</jsSourceFile>
 								</jsSourceFiles>
 								<jsSourceIncludes>
 									<jsSourceInclude>*.js</jsSourceInclude>
@@ -347,6 +364,8 @@ Rerun the sync-js-hand.js script.
 									<jsSourceInclude>webgl/*.js</jsSourceInclude>
 								</jsSourceIncludes>
 								<jsSourceExcludes>
+									<jsSourceExclude>webclient.min.js</jsSourceExclude>
+									<jsSourceExclude>webclient.js</jsSourceExclude>
 									<jsSourceExclude>libs/jquery.min.js</jsSourceExclude>
 									<jsSourceExclude>libs/hammer.min.js</jsSourceExclude>
 									<jsSourceExclude>libs/gif.worker.js</jsSourceExclude>
