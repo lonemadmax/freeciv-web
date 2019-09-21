@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<derived-webapp.dir>${basedir}/src/derived/webapp</derived-webapp.dir>
-		<generated-js.dir>${project.build.directory}/generated-sources/javascript</generated-js.dir>
+		<generated-js.dir>${project.build.directory}/${project.build.finalName}/javascript</generated-js.dir>
 	</properties>
 
 	<repositories>
@@ -207,53 +207,9 @@ Rerun the sync-js-hand.js script.
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.1.0</version>
-					<executions>
-						<execution>
-							<id>copy-generated-webapp-resources</id>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>copy-resources</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
-								<resources>
-									<resource>
-										<directory>${derived-webapp.dir}</directory>
-										<excludes>
-											<exclude>.gitignore</exclude>
-											<exclude>README.md</exclude>
-											<exclude>javascript/*.js</exclude>
-											<!-- NOT excluding `javascript/2dcavas/*` -->
-										</excludes>
-									</resource>
-								</resources>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.8</version>
 					<executions>
-						<execution>
-							<!-- workaround for https://github.com/samaxes/minify-maven-plugin/issues/142 -->
-							<id>source-mapping-fix</id>
-							<phase>initialize</phase>
-							<goals>
-								<goal>run</goal>
-							</goals>
-							<configuration>
-								<target>
-									<delete quiet="true">
-										<fileset dir="${project.build.directory}/freeciv-web/javascript" includes="**/*.map"/>
-									</delete>
-								</target>
-							</configuration>
-						</execution>
 						<execution>
 							<id>create-generated-javascript-dir</id>
 							<phase>generate-sources</phase>
@@ -289,25 +245,56 @@ Rerun the sync-js-hand.js script.
 				</plugin>
 
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.1.0</version>
+					<executions>
+						<execution>
+							<id>copy-generated-webapp-resources</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+								<resources>
+									<resource>
+										<directory>${derived-webapp.dir}</directory>
+										<excludes>
+											<exclude>.gitignore</exclude>
+											<exclude>README.md</exclude>
+											<exclude>javascript/2dcanvas/*trident*</exclude>
+										</excludes>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+						<execution>
+							<!-- I just want to have all the js together -->
+							<id>copy-javascript</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/${project.build.finalName}/javascript</outputDirectory>
+								<resources>
+									<resource>
+										<directory>${basedir}/src/main/webapp/javascript</directory>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
 					<groupId>com.samaxes.maven</groupId>
 					<artifactId>minify-maven-plugin</artifactId>
 					<version>1.7.6</version>
-					<dependencies>
-						<dependency>
-							<groupId>com.google.javascript</groupId>
-							<artifactId>closure-compiler</artifactId>
-							<version>v20180716</version>
-						</dependency>
-					</dependencies>
-					<configuration>
-						<jsEngine>CLOSURE</jsEngine>
-						<closureLanguageIn>ECMASCRIPT_2017</closureLanguageIn>
-						<closureCreateSourceMap>true</closureCreateSourceMap>
-					</configuration>
 					<executions>
-						<!-- Create minified common webclient.min.js and css -->
 						<execution>
-							<id>default-minify</id>
+							<id>minify-webclient.css</id>
 							<configuration>
 								<cssFinalFile>webclient.css</cssFinalFile>
 								<cssSourceFiles>
@@ -323,52 +310,110 @@ Rerun the sync-js-hand.js script.
 									<cssSourceFile>pregame.css</cssSourceFile>
 									<cssSourceFile>civclient.css</cssSourceFile>
 								</cssSourceFiles>
-								<jsSourceDir>javascript</jsSourceDir>
-								<jsFinalFile>webclient.js</jsFinalFile>
-								<jsSourceFiles>
-									<!-- order is important: these must be before sources below -->
-									<jsSourceFile>libs/EventAggregator.js</jsSourceFile>
-									<jsSourceFile>libs/handlebars.runtime-v4.0.11.js</jsSourceFile>
-									<jsSourceFile>map-constants.js</jsSourceFile>
-									<jsSourceFile>2dcanvas/tilespec-constants.js</jsSourceFile>
-									<!-- these must be listed here, jsSourceIncludes doesn't work -->
-									<jsSourceFile>../../../derived/webapp/javascript/fc_events.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/freeciv-helpdata.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/packets.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/packhand_gen.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/soundset_spec.js</jsSourceFile>
-									<jsSourceFile>../../../derived/webapp/javascript/2dcanvas/tileset_spec_amplio2.js</jsSourceFile>
-									<jsSourceFile>../../../../target/generated-sources/javascript/hbs-templates.js</jsSourceFile>
-								</jsSourceFiles>
-								<jsSourceIncludes>
-									<jsSourceInclude>*.js</jsSourceInclude>
-									<jsSourceInclude>libs/*.js</jsSourceInclude>
-									<jsSourceInclude>2dcanvas/*.js</jsSourceInclude>
-									<jsSourceInclude>webgl/*.js</jsSourceInclude>
-								</jsSourceIncludes>
-								<jsSourceExcludes>
-									<jsSourceExclude>libs/jquery.min.js</jsSourceExclude>
-									<jsSourceExclude>libs/hammer.min.js</jsSourceExclude>
-									<jsSourceExclude>libs/gif.worker.js</jsSourceExclude>
-								</jsSourceExcludes>
+								<!-- So that no empty 'js' directory is created -->
+								<jsTargetDir>javascript</jsTargetDir>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
 							</goals>
 						</execution>
-						<!-- Create minified WebGL specific webgl-client.min.js -->
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>com.github.blutorange</groupId>
+					<artifactId>closure-compiler-maven-plugin</artifactId>
+					<version>2.10.0</version>
+					<configuration>
+						<closureLanguageIn>ECMASCRIPT_2017</closureLanguageIn>
+						<closureLanguageOut>ECMASCRIPT5</closureLanguageOut>
+						<closureCreateSourceMap>false</closureCreateSourceMap>
+						<closureEmitUseStrict>false</closureEmitUseStrict>
+					</configuration>
+					<executions>
+						<execution>
+							<id>merge-webclient</id>
+							<configuration>
+								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
+								<sourceDir>javascript</sourceDir>
+								<targetDir>javascript</targetDir>
+								<outputFilename>webclient.js</outputFilename>
+								<includes>
+									<!-- order is important: these must be before sources below -->
+									<include>libs/EventAggregator.js</include>
+									<include>libs/handlebars.runtime-v4.0.11.js</include>
+									<include>map-constants.js</include>
+									<include>2dcanvas/tilespec-constants.js</include>
+									<!-- end of order dependent includes -->
+									<include>*.js</include>
+									<include>libs/*.js</include>
+									<include>2dcanvas/*.js</include>
+									<include>webgl/*.js</include>
+								</includes>
+								<excludes>
+									<exclude>webclient.js</exclude>
+									<exclude>webclient.min.js</exclude>
+									<exclude>libs/jquery.min.js</exclude>
+									<exclude>libs/hammer.min.js</exclude>
+									<exclude>libs/gif.worker.js</exclude>
+								</excludes>
+								<skipMinify>true</skipMinify>
+							</configuration>
+							<goals>
+								<goal>minify</goal>
+							</goals>
+						</execution>
+
+						<execution>
+							<id>minify-webclient.js</id>
+							<configuration>
+								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
+								<sourceDir>javascript</sourceDir>
+								<targetDir>javascript</targetDir>
+								<outputFilename>webclient.min.js</outputFilename>
+								<includes>
+									<include>webclient.js</include>
+								</includes>
+								<closureCreateSourceMap>true</closureCreateSourceMap>
+							</configuration>
+							<goals>
+								<goal>minify</goal>
+							</goals>
+						</execution>
+
+						<execution>
+							<id>merge-webgl-libs</id>
+							<configuration>
+								<sourceDir>javascript/webgl/libs/</sourceDir>
+								<targetDir>javascript/webgl/libs/</targetDir>
+								<outputFilename>webgl-client.js</outputFilename>
+								<includes>
+									<include>*.js</include>
+								</includes>
+								<excludes>
+									<exclude>webgl-client.js</exclude>
+									<exclude>webgl-client.min.js</exclude>
+									<exclude>three.min.js</exclude>
+									<exclude>StereoEffect.js</exclude>
+								</excludes>
+								<skipMinify>true</skipMinify>
+							</configuration>
+							<goals>
+								<goal>minify</goal>
+							</goals>
+						</execution>
+
 						<execution>
 							<id>webgl-minify</id>
 							<configuration>
-								<jsSourceDir>javascript/webgl/libs/</jsSourceDir>
-								<jsFinalFile>webgl-client.js</jsFinalFile>
-								<jsSourceIncludes>
-									<jsSourceInclude>*.js</jsSourceInclude>
-								</jsSourceIncludes>
-								<jsSourceExcludes>
-									<jsSourceExclude>three.min.js</jsSourceExclude>
-									<jsSourceExclude>StereoEffect.js</jsSourceExclude>
-								</jsSourceExcludes>
+								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
+								<sourceDir>javascript/webgl/libs/</sourceDir>
+								<targetDir>javascript/webgl/libs/</targetDir>
+								<outputFilename>webgl-client.min.js</outputFilename>
+								<includes>
+									<include>webgl-client.js</include>
+								</includes>
+								<closureCreateSourceMap>true</closureCreateSourceMap>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
@@ -378,12 +423,12 @@ Rerun the sync-js-hand.js script.
 						<execution>
 							<id>index-minify</id>
 							<configuration>
-								<jsSourceDir>static/javascript</jsSourceDir>
-								<jsFinalFile>index.js</jsFinalFile>
-								<jsSourceIncludes>
-									<jsSourceInclude>index.js</jsSourceInclude>
-								</jsSourceIncludes>
-								<closureCreateSourceMap>false</closureCreateSourceMap>
+								<sourceDir>static/javascript</sourceDir>
+								<targetDir>static/javascript</targetDir>
+								<outputFilename>index.min.js</outputFilename>
+								<includes>
+									<include>index.js</include>
+								</includes>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
