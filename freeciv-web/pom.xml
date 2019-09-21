@@ -307,18 +307,6 @@ Rerun the sync-js-hand.js script.
 					<groupId>com.samaxes.maven</groupId>
 					<artifactId>minify-maven-plugin</artifactId>
 					<version>1.7.6</version>
-					<dependencies>
-						<dependency>
-							<groupId>com.google.javascript</groupId>
-							<artifactId>closure-compiler</artifactId>
-							<version>v20180716</version>
-						</dependency>
-					</dependencies>
-					<configuration>
-						<jsEngine>CLOSURE</jsEngine>
-						<closureLanguageIn>ECMASCRIPT_2017</closureLanguageIn>
-						<closureCreateSourceMap>true</closureCreateSourceMap>
-					</configuration>
 					<executions>
 						<execution>
 							<id>minify-webclient.css</id>
@@ -337,57 +325,110 @@ Rerun the sync-js-hand.js script.
 									<cssSourceFile>pregame.css</cssSourceFile>
 									<cssSourceFile>civclient.css</cssSourceFile>
 								</cssSourceFiles>
+								<!-- So that no empty 'js' directory is created -->
+								<jsTargetDir>javascript</jsTargetDir>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
 							</goals>
 						</execution>
-						<!-- Create minified common webclient.min.js -->
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>com.github.blutorange</groupId>
+					<artifactId>closure-compiler-maven-plugin</artifactId>
+					<version>2.10.0</version>
+					<configuration>
+						<closureLanguageIn>ECMASCRIPT_2017</closureLanguageIn>
+						<closureLanguageOut>ECMASCRIPT5</closureLanguageOut>
+						<closureCreateSourceMap>false</closureCreateSourceMap>
+						<closureEmitUseStrict>false</closureEmitUseStrict>
+					</configuration>
+					<executions>
+						<execution>
+							<id>merge-webclient</id>
+							<configuration>
+								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
+								<sourceDir>javascript</sourceDir>
+								<targetDir>javascript</targetDir>
+								<outputFilename>webclient.js</outputFilename>
+								<includes>
+									<!-- order is important: these must be before sources below -->
+									<include>libs/EventAggregator.js</include>
+									<include>libs/handlebars.runtime-v4.0.11.js</include>
+									<include>map-constants.js</include>
+									<include>2dcanvas/tilespec-constants.js</include>
+									<!-- end of order dependent includes -->
+									<include>*.js</include>
+									<include>libs/*.js</include>
+									<include>2dcanvas/*.js</include>
+									<include>webgl/*.js</include>
+								</includes>
+								<excludes>
+									<exclude>webclient.js</exclude>
+									<exclude>webclient.min.js</exclude>
+									<exclude>libs/jquery.min.js</exclude>
+									<exclude>libs/hammer.min.js</exclude>
+									<exclude>libs/gif.worker.js</exclude>
+								</excludes>
+								<skipMinify>true</skipMinify>
+							</configuration>
+							<goals>
+								<goal>minify</goal>
+							</goals>
+						</execution>
+
 						<execution>
 							<id>minify-webclient.js</id>
 							<configuration>
-								<webappSourceDir>${project.build.directory}/${project.build.finalName}</webappSourceDir>
-								<jsSourceDir>javascript</jsSourceDir>
-								<jsFinalFile>webclient.js</jsFinalFile>
-								<jsSourceFiles>
-									<!-- order is important: these must be before sources below -->
-									<jsSourceFile>libs/EventAggregator.js</jsSourceFile>
-									<jsSourceFile>libs/handlebars.runtime-v4.0.11.js</jsSourceFile>
-									<jsSourceFile>map-constants.js</jsSourceFile>
-									<jsSourceFile>2dcanvas/tilespec-constants.js</jsSourceFile>
-									<!-- these must be listed here, jsSourceIncludes doesn't work -->
-								</jsSourceFiles>
-								<jsSourceIncludes>
-									<jsSourceInclude>*.js</jsSourceInclude>
-									<jsSourceInclude>libs/*.js</jsSourceInclude>
-									<jsSourceInclude>2dcanvas/*.js</jsSourceInclude>
-									<jsSourceInclude>webgl/*.js</jsSourceInclude>
-								</jsSourceIncludes>
-								<jsSourceExcludes>
-									<jsSourceExclude>webclient.min.js</jsSourceExclude>
-									<jsSourceExclude>webclient.js</jsSourceExclude>
-									<jsSourceExclude>libs/jquery.min.js</jsSourceExclude>
-									<jsSourceExclude>libs/hammer.min.js</jsSourceExclude>
-									<jsSourceExclude>libs/gif.worker.js</jsSourceExclude>
-								</jsSourceExcludes>
+								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
+								<sourceDir>javascript</sourceDir>
+								<targetDir>javascript</targetDir>
+								<outputFilename>webclient.min.js</outputFilename>
+								<includes>
+									<include>webclient.js</include>
+								</includes>
+								<closureCreateSourceMap>true</closureCreateSourceMap>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
 							</goals>
 						</execution>
-						<!-- Create minified WebGL specific webgl-client.min.js -->
+
+						<execution>
+							<id>merge-webgl-libs</id>
+							<configuration>
+								<sourceDir>javascript/webgl/libs/</sourceDir>
+								<targetDir>javascript/webgl/libs/</targetDir>
+								<outputFilename>webgl-client.js</outputFilename>
+								<includes>
+									<include>*.js</include>
+								</includes>
+								<excludes>
+									<exclude>webgl-client.js</exclude>
+									<exclude>webgl-client.min.js</exclude>
+									<exclude>three.min.js</exclude>
+									<exclude>StereoEffect.js</exclude>
+								</excludes>
+								<skipMinify>true</skipMinify>
+							</configuration>
+							<goals>
+								<goal>minify</goal>
+							</goals>
+						</execution>
+
 						<execution>
 							<id>webgl-minify</id>
 							<configuration>
-								<jsSourceDir>javascript/webgl/libs/</jsSourceDir>
-								<jsFinalFile>webgl-client.js</jsFinalFile>
-								<jsSourceIncludes>
-									<jsSourceInclude>*.js</jsSourceInclude>
-								</jsSourceIncludes>
-								<jsSourceExcludes>
-									<jsSourceExclude>three.min.js</jsSourceExclude>
-									<jsSourceExclude>StereoEffect.js</jsSourceExclude>
-								</jsSourceExcludes>
+								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
+								<sourceDir>javascript/webgl/libs/</sourceDir>
+								<targetDir>javascript/webgl/libs/</targetDir>
+								<outputFilename>webgl-client.min.js</outputFilename>
+								<includes>
+									<include>webgl-client.js</include>
+								</includes>
+								<closureCreateSourceMap>true</closureCreateSourceMap>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
@@ -397,12 +438,12 @@ Rerun the sync-js-hand.js script.
 						<execution>
 							<id>index-minify</id>
 							<configuration>
-								<jsSourceDir>static/javascript</jsSourceDir>
-								<jsFinalFile>index.js</jsFinalFile>
-								<jsSourceIncludes>
-									<jsSourceInclude>index.js</jsSourceInclude>
-								</jsSourceIncludes>
-								<closureCreateSourceMap>false</closureCreateSourceMap>
+								<sourceDir>static/javascript</sourceDir>
+								<targetDir>static/javascript</targetDir>
+								<outputFilename>index.min.js</outputFilename>
+								<includes>
+									<include>index.js</include>
+								</includes>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
