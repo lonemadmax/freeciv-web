@@ -15,6 +15,7 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<derived-webapp.dir>${basedir}/src/derived/webapp</derived-webapp.dir>
 		<generated-js.dir>${project.build.directory}/${project.build.finalName}/javascript</generated-js.dir>
+		<skip-minify-js>false</skip-minify-js>
 	</properties>
 
 	<repositories>
@@ -327,17 +328,18 @@ Rerun the sync-js-hand.js script.
 					<configuration>
 						<closureLanguageIn>ECMASCRIPT_2017</closureLanguageIn>
 						<closureLanguageOut>ECMASCRIPT5</closureLanguageOut>
-						<closureCreateSourceMap>false</closureCreateSourceMap>
+						<closureCreateSourceMap>true</closureCreateSourceMap>
 						<closureEmitUseStrict>false</closureEmitUseStrict>
+						<skipMinify>${skip-minify-js}</skipMinify>
 					</configuration>
 					<executions>
 						<execution>
-							<id>merge-webclient</id>
+							<id>minify-webclient-js</id>
 							<configuration>
 								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
 								<sourceDir>javascript</sourceDir>
 								<targetDir>javascript</targetDir>
-								<outputFilename>webclient.js</outputFilename>
+								<outputFilename>webclient.min.js</outputFilename>
 								<includes>
 									<!-- order is important: these must be before sources below -->
 									<include>libs/EventAggregator.js</include>
@@ -357,7 +359,6 @@ Rerun the sync-js-hand.js script.
 									<exclude>libs/hammer.min.js</exclude>
 									<exclude>libs/gif.worker.js</exclude>
 								</excludes>
-								<skipMinify>true</skipMinify>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
@@ -365,28 +366,11 @@ Rerun the sync-js-hand.js script.
 						</execution>
 
 						<execution>
-							<id>minify-webclient.js</id>
-							<configuration>
-								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
-								<sourceDir>javascript</sourceDir>
-								<targetDir>javascript</targetDir>
-								<outputFilename>webclient.min.js</outputFilename>
-								<includes>
-									<include>webclient.js</include>
-								</includes>
-								<closureCreateSourceMap>true</closureCreateSourceMap>
-							</configuration>
-							<goals>
-								<goal>minify</goal>
-							</goals>
-						</execution>
-
-						<execution>
-							<id>merge-webgl-libs</id>
+							<id>minify-webgl-libs</id>
 							<configuration>
 								<sourceDir>javascript/webgl/libs/</sourceDir>
 								<targetDir>javascript/webgl/libs/</targetDir>
-								<outputFilename>webgl-client.js</outputFilename>
+								<outputFilename>webgl-client.min.js</outputFilename>
 								<includes>
 									<include>*.js</include>
 								</includes>
@@ -396,24 +380,6 @@ Rerun the sync-js-hand.js script.
 									<exclude>three.min.js</exclude>
 									<exclude>StereoEffect.js</exclude>
 								</excludes>
-								<skipMinify>true</skipMinify>
-							</configuration>
-							<goals>
-								<goal>minify</goal>
-							</goals>
-						</execution>
-
-						<execution>
-							<id>webgl-minify</id>
-							<configuration>
-								<baseSourceDir>${project.build.directory}/${project.build.finalName}</baseSourceDir>
-								<sourceDir>javascript/webgl/libs/</sourceDir>
-								<targetDir>javascript/webgl/libs/</targetDir>
-								<outputFilename>webgl-client.min.js</outputFilename>
-								<includes>
-									<include>webgl-client.js</include>
-								</includes>
-								<closureCreateSourceMap>true</closureCreateSourceMap>
 							</configuration>
 							<goals>
 								<goal>minify</goal>
