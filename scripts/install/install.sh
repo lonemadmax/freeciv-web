@@ -220,6 +220,10 @@ fi
 . "${basedir}/scripts/install/${FCW_INSTALL_SCRIPT}"
 echo "System specific install complete (${basedir}/scripts/install/${FCW_INSTALL_SCRIPT})"
 
+echo "==== Installing Handlebars ===="
+sudo -H npm install handlebars@4.x -g
+cp "$(npm config get prefix)/lib/node_modules/handlebars/dist/handlebars.runtime.js" "${basedir}"/freeciv-web/src/main/webapp/javascript/libs/
+
 echo "==== Installing python modules ===="
 pip3 install --user -r "${basedir}/requirements.txt"
 

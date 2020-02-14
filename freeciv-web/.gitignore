@@ -1,1 +1,3 @@
 flyway.properties
+src/main/webapp/build.txt
+src/main/webapp/javascript/libs/handlebars.runtime.js
