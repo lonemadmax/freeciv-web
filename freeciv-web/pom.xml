@@ -238,8 +238,8 @@ Rerun the sync-js-hand.js script.
 								<goal>exec</goal>
 							</goals>
 							<configuration>
-								<executable>handlebars</executable>
-								<commandlineArgs>src/main/webapp/webclient -e hbs -f ${generated-js.dir}/hbs-templates.js --knownOnly</commandlineArgs>
+								<executable>npm</executable>
+								<commandlineArgs>run compile-hb -- ${generated-js.dir}</commandlineArgs>
 							</configuration>
 						</execution>
 					</executions>
@@ -282,6 +282,12 @@ Rerun the sync-js-hand.js script.
 								<resources>
 									<resource>
 										<directory>${basedir}/src/main/webapp/javascript</directory>
+									</resource>
+									<resource>
+										<directory>${basedir}/node_modules/handlebars/dist</directory>
+										<includes>
+											<include>handlebars.runtime.js</include>
+										</includes>
 									</resource>
 								</resources>
 							</configuration>
@@ -343,7 +349,7 @@ Rerun the sync-js-hand.js script.
 								<includes>
 									<!-- order is important: these must be before sources below -->
 									<include>libs/EventAggregator.js</include>
-									<include>libs/handlebars.runtime.js</include>
+									<include>handlebars.runtime.js</include>
 									<include>map-constants.js</include>
 									<include>2dcanvas/tilespec-constants.js</include>
 									<!-- end of order dependent includes -->

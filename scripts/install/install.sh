@@ -220,10 +220,6 @@ fi
 . "${basedir}/scripts/install/${FCW_INSTALL_SCRIPT}"
 echo "System specific install complete (${basedir}/scripts/install/${FCW_INSTALL_SCRIPT})"
 
-echo "==== Installing Handlebars ===="
-sudo -H npm install handlebars@4.x -g
-cp "$(sudo -H npm config get prefix -g)/lib/node_modules/handlebars/dist/handlebars.runtime.js" "${basedir}"/freeciv-web/src/main/webapp/javascript/libs/
-
 echo "==== Installing python modules ===="
 pip3 install --user -r "${basedir}/requirements.txt"
 
@@ -302,6 +298,10 @@ mkdir -p "${basedir}/freeciv-web/src/derived/webapp" && \
   -o "${basedir}/freeciv-web/src/derived/webapp" \
   -d "${TOMCAT_HOME}/webapps/data" || \
   handle_error 6 "Failed to synchronize freeciv project"
+
+cd "${basedir}"/freeciv-web && \
+  npm ci || \
+  handle_error 8 "Failed to install node dependencies"
 
 cd "${basedir}"/freeciv-web && \
   ./build.sh -B || \
