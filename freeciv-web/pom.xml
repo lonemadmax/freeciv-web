@@ -122,7 +122,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0-M2</version>
+					<version>3.0.0-M3</version>
 					<executions>
 						<execution>
 							<id>enforce-files-exist</id>
@@ -167,7 +167,7 @@ Rerun the sync-js-hand.js script.
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
-					<version>3.2.3</version>
+					<version>3.3.1</version>
 					<configuration>
 						<recompressZippedFiles>false</recompressZippedFiles>
 						<webResources>
@@ -248,7 +248,7 @@ Rerun the sync-js-hand.js script.
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.2.0</version>
 					<executions>
 						<execution>
 							<id>copy-generated-webapp-resources</id>
