@@ -330,7 +330,7 @@ Rerun the sync-js-hand.js script.
 				<plugin>
 					<groupId>com.github.blutorange</groupId>
 					<artifactId>closure-compiler-maven-plugin</artifactId>
-					<version>2.10.0</version>
+					<version>2.21.0</version>
 					<configuration>
 						<closureLanguageIn>ECMASCRIPT_2017</closureLanguageIn>
 						<closureLanguageOut>ECMASCRIPT5</closureLanguageOut>
