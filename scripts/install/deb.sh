@@ -44,6 +44,7 @@ dependencies="\
   python3-pip \
   python3-setuptools \
   python3-wheel \
+  python3-dev \
   sed \
   tar \
   unzip \
