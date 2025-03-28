@@ -115,7 +115,7 @@
 
 		<div>
 			<h3>The One True Community Site</h3>
-			<p>So it seems we finally have one server for everybody. Check out <a href="https://www.freecivweb.org/">freecivweb.org</a>. If you want to move your games there, <a href="mailto:antiswen@yahoo.es">send me a message</a> from you registered mail address detailing your username, whether you want to remove your account from here and, if you already have an account in the other server, what are the username and mail address there.</p>
+			<p>So it seems we finally have one server for everybody. Check out <a href="https://www.freecivweb.com/">freecivweb.org</a>. If you want to move your games there, <a href="mailto:antiswen@yahoo.es">send me a message</a> from you registered mail address detailing your username, whether you want to remove your account from here and, if you already have an account in the other server, what are the username and mail address there.</p>
 			<p>This was born as just a throwaway server to play non-longturn games until the community server included them. Now that it seems we have one, this server demise is near.</p>
 			<p>Some warnings:</p>
 			<ul>
