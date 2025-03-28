@@ -9,7 +9,7 @@ Freeciv-web is free and open source software. The Freeciv C server is released u
 under the GNU Affero General Public License. See [License](LICENSE.txt) for the full license document.
 
 Currently known servers based on Freeciv-web:
-- [freecivweb.org](https://www.freecivweb.org) 
+- [freecivweb.com](https://www.freecivweb.com)
 - [moving borders](https://fcw.movingborders.es) (Everything except longturn and real-Earth)
 
 Freeciv WebGL 3D:
