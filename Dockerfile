@@ -1,7 +1,7 @@
 # Freeciv-web docker file
 # Dockerfile update based on debian/tomcat package
 
-FROM debian:stretch
+FROM debian:bullseye-20260505
 
 MAINTAINER The Freeciv Project version: 2.5
 
